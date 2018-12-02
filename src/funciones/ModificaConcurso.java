@@ -27,8 +27,6 @@ public class ModificaConcurso {
 
     public void ActualizaConcurso(String Id, String Concurso, String HoraInicio, String AmPmInicio, String HoraFinal, String AmPmFinal, int Estatus) {
 
-        ConexionDb db = new ConexionDb();
-        Statement st = db.Conecxion();
         this.Concurso = Concurso;
         this.Estatus = Estatus;
 

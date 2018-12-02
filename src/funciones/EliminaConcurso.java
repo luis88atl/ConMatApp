@@ -17,10 +17,11 @@ import static java.util.logging.Logger.getLogger;
  */
 public class EliminaConcurso {
 
-    public void ElinarConcurso(String Id) {
+    ConexionDb db = new ConexionDb();
+    Statement st = db.Conecxion();
+
+    public void EliminarConcurso(String Id) {
         try {
-            ConexionDb db = new ConexionDb();
-            Statement st = db.Conecxion();
             db.insertaDatos("DELETE Concursos WHERE ID = " + Id, st);
         } catch (SQLException ex) {
             getLogger(AdministradorEquipos.class.getName()).log(SEVERE, null, ex);

@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -86,6 +87,38 @@ public class AdministradorConcursos extends javax.swing.JFrame {
         PanelTablaConcursos = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaEquipos = new javax.swing.JTable();
+        PanelAsignaConcurso = new javax.swing.JPanel();
+        Cve1 = new javax.swing.JTextField();
+        Ck1 = new javax.swing.JCheckBox();
+        Nm1 = new javax.swing.JTextField();
+        Ck2 = new javax.swing.JCheckBox();
+        Cve2 = new javax.swing.JTextField();
+        Nm2 = new javax.swing.JTextField();
+        Nm3 = new javax.swing.JTextField();
+        Ck3 = new javax.swing.JCheckBox();
+        Cve3 = new javax.swing.JTextField();
+        Ck4 = new javax.swing.JCheckBox();
+        Nm4 = new javax.swing.JTextField();
+        Cve4 = new javax.swing.JTextField();
+        Nm5 = new javax.swing.JTextField();
+        Cve5 = new javax.swing.JTextField();
+        Ck5 = new javax.swing.JCheckBox();
+        Nm6 = new javax.swing.JTextField();
+        Cve6 = new javax.swing.JTextField();
+        Ck6 = new javax.swing.JCheckBox();
+        Cve7 = new javax.swing.JTextField();
+        Ck7 = new javax.swing.JCheckBox();
+        Nm7 = new javax.swing.JTextField();
+        Ck8 = new javax.swing.JCheckBox();
+        Cve8 = new javax.swing.JTextField();
+        Nm8 = new javax.swing.JTextField();
+        Nm9 = new javax.swing.JTextField();
+        Cve9 = new javax.swing.JTextField();
+        Ck9 = new javax.swing.JCheckBox();
+        Ck10 = new javax.swing.JCheckBox();
+        Cve10 = new javax.swing.JTextField();
+        Nm10 = new javax.swing.JTextField();
+        TituloTxt = new javax.swing.JTextField();
         PanelPreguntas = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         IdConcurso = new javax.swing.JLabel();
@@ -105,7 +138,6 @@ public class AdministradorConcursos extends javax.swing.JFrame {
         BoxHorasFinal = new javax.swing.JComboBox<>();
         BoxAmPmFinal = new javax.swing.JComboBox<>();
         BtnLimpiaConcurso = new javax.swing.JButton();
-        PanelAsignaConcurso = new javax.swing.JScrollPane();
         BtnRegresaConcurso = new javax.swing.JButton();
         BtnAsignarConcursos = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -244,6 +276,259 @@ public class AdministradorConcursos extends javax.swing.JFrame {
         );
 
         jPanel2.add(PanelTablaConcursos, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 80, 710, 540));
+
+        PanelAsignaConcurso.setBackground(new java.awt.Color(255, 255, 255));
+        PanelAsignaConcurso.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 2, true));
+        PanelAsignaConcurso.setForeground(new java.awt.Color(255, 255, 255));
+
+        Cve1.setEditable(false);
+        Cve1.setVisible(false);
+        Cve1.setBackground(new java.awt.Color(255, 255, 255));
+
+        Ck1.setVisible(false);
+        Ck1.setBackground(new java.awt.Color(255, 255, 255));
+
+        Nm1.setVisible(false);
+
+        Ck2.setVisible(false);
+        Ck2.setBackground(new java.awt.Color(255, 255, 255));
+
+        Cve2.setEditable(false);
+        Cve2.setVisible(false);
+        Cve2.setBackground(new java.awt.Color(255, 255, 255));
+
+        Nm2.setVisible(false);
+
+        Nm3.setVisible(false);
+
+        Ck3.setVisible(false);
+        Ck3.setBackground(new java.awt.Color(255, 255, 255));
+
+        Cve3.setEditable(false);
+        Cve3.setVisible(false);
+        Cve3.setBackground(new java.awt.Color(255, 255, 255));
+
+        Ck4.setVisible(false);
+        Ck4.setBackground(new java.awt.Color(255, 255, 255));
+
+        Nm4.setVisible(false);
+
+        Cve4.setEditable(false);
+        Cve4.setVisible(false);
+        Cve4.setBackground(new java.awt.Color(255, 255, 255));
+
+        Nm5.setVisible(false);
+
+        Cve5.setEditable(false);
+        Cve5.setVisible(false);
+        Cve5.setBackground(new java.awt.Color(255, 255, 255));
+
+        Ck5.setVisible(false);
+        Ck5.setBackground(new java.awt.Color(255, 255, 255));
+
+        Nm6.setVisible(false);
+
+        Cve6.setEditable(false);
+        Cve6.setVisible(false);
+        Cve6.setBackground(new java.awt.Color(255, 255, 255));
+
+        Ck6.setVisible(false);
+        Ck6.setBackground(new java.awt.Color(255, 255, 255));
+
+        Cve7.setEditable(false);
+        Cve7.setVisible(false);
+        Cve7.setBackground(new java.awt.Color(255, 255, 255));
+
+        Ck7.setVisible(false);
+        Ck7.setBackground(new java.awt.Color(255, 255, 255));
+
+        Nm7.setVisible(false);
+
+        Ck8.setVisible(false);
+        Ck8.setBackground(new java.awt.Color(255, 255, 255));
+
+        Cve8.setEditable(false);
+        Cve8.setVisible(false);
+        Cve8.setBackground(new java.awt.Color(255, 255, 255));
+
+        Nm8.setVisible(false);
+
+        Nm9.setVisible(false);
+
+        Cve9.setEditable(false);
+        Cve9.setVisible(false);
+        Cve9.setBackground(new java.awt.Color(255, 255, 255));
+
+        Ck9.setVisible(false);
+        Ck9.setBackground(new java.awt.Color(255, 255, 255));
+
+        Ck10.setVisible(false);
+        Ck10.setBackground(new java.awt.Color(255, 255, 255));
+
+        Cve10.setEditable(false);
+        Cve10.setVisible(false);
+        Cve10.setBackground(new java.awt.Color(255, 255, 255));
+
+        Nm10.setVisible(false);
+
+        Nm1.setVisible(false);
+        TituloTxt.setFont(new java.awt.Font("Decker", 1, 16)); // NOI18N
+        TituloTxt.setText("Asignación de Capitanes Participantes a los Concursos");
+
+        javax.swing.GroupLayout PanelAsignaConcursoLayout = new javax.swing.GroupLayout(PanelAsignaConcurso);
+        PanelAsignaConcurso.setLayout(PanelAsignaConcursoLayout);
+        PanelAsignaConcursoLayout.setHorizontalGroup(
+            PanelAsignaConcursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelAsignaConcursoLayout.createSequentialGroup()
+                .addGroup(PanelAsignaConcursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelAsignaConcursoLayout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addGroup(PanelAsignaConcursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PanelAsignaConcursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAsignaConcursoLayout.createSequentialGroup()
+                                    .addComponent(Ck2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Cve2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Nm2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAsignaConcursoLayout.createSequentialGroup()
+                                    .addComponent(Ck3)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Cve3, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Nm3, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAsignaConcursoLayout.createSequentialGroup()
+                                    .addComponent(Ck4)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Cve4, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Nm4, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAsignaConcursoLayout.createSequentialGroup()
+                                    .addComponent(Ck5)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Cve5, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Nm5, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAsignaConcursoLayout.createSequentialGroup()
+                                    .addComponent(Ck6)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Cve6, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Nm6, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAsignaConcursoLayout.createSequentialGroup()
+                                    .addComponent(Ck7)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Cve7, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Nm7, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(PanelAsignaConcursoLayout.createSequentialGroup()
+                                    .addComponent(Ck8)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Cve8, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Nm8, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(PanelAsignaConcursoLayout.createSequentialGroup()
+                                    .addComponent(Ck9)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Cve9, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Nm9, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(PanelAsignaConcursoLayout.createSequentialGroup()
+                                    .addComponent(Ck10)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Cve10, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Nm10, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(PanelAsignaConcursoLayout.createSequentialGroup()
+                                .addComponent(Ck1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Cve1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Nm1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(PanelAsignaConcursoLayout.createSequentialGroup()
+                        .addGap(91, 91, 91)
+                        .addComponent(TituloTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 496, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        PanelAsignaConcursoLayout.setVerticalGroup(
+            PanelAsignaConcursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAsignaConcursoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(TituloTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addGroup(PanelAsignaConcursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelAsignaConcursoLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(Ck1))
+                    .addComponent(Cve1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Nm1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(PanelAsignaConcursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelAsignaConcursoLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(Ck2))
+                    .addComponent(Cve2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Nm2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(PanelAsignaConcursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelAsignaConcursoLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(Ck3))
+                    .addComponent(Cve3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Nm3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(PanelAsignaConcursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelAsignaConcursoLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(Ck4))
+                    .addComponent(Cve4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Nm4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(PanelAsignaConcursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelAsignaConcursoLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(Ck5))
+                    .addComponent(Cve5, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Nm5, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(PanelAsignaConcursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelAsignaConcursoLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(Ck6))
+                    .addComponent(Cve6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Nm6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(PanelAsignaConcursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelAsignaConcursoLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(Ck7))
+                    .addComponent(Cve7, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Nm7, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(PanelAsignaConcursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelAsignaConcursoLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(Ck8))
+                    .addComponent(Cve8, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Nm8, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(PanelAsignaConcursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelAsignaConcursoLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(Ck9))
+                    .addComponent(Cve9, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Nm9, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(PanelAsignaConcursoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelAsignaConcursoLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(Ck10))
+                    .addComponent(Cve10, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Nm10, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22))
+        );
+
+        jPanel2.add(PanelAsignaConcurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 80, 710, 660));
 
         PanelPreguntas.setBackground(new java.awt.Color(255, 255, 255));
         PanelPreguntas.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 2, true));
@@ -449,6 +734,11 @@ public class AdministradorConcursos extends javax.swing.JFrame {
         ChkConcursoActivo.setSelected(true);
         ChkConcursoActivo.setText("Activar Concurso");
         ChkConcursoActivo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
+        ChkConcursoActivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ChkConcursoActivoActionPerformed(evt);
+            }
+        });
         jPanel2.add(ChkConcursoActivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, -1, 40));
 
         BoxHorasFinal.setFont(new java.awt.Font("Decker", 1, 14)); // NOI18N
@@ -500,11 +790,6 @@ public class AdministradorConcursos extends javax.swing.JFrame {
             }
         });
         jPanel2.add(BtnLimpiaConcurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 510, -1, -1));
-
-        PanelAsignaConcurso.setBackground(new java.awt.Color(255, 255, 255));
-        PanelAsignaConcurso.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 2, true));
-        PanelAsignaConcurso.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel2.add(PanelAsignaConcurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 80, 710, 660));
 
         BtnRegresaConcurso.setBackground(new java.awt.Color(255, 255, 255));
         BtnRegresaConcurso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btn_regresar.png"))); // NOI18N
@@ -797,7 +1082,7 @@ public class AdministradorConcursos extends javax.swing.JFrame {
         String Concurso = NombreConcurso.getText();
 
         Object[] opciones = {"ACEPTAR", "CANCELAR"};
-        int Eleccion = JOptionPane.showOptionDialog(rootPane, "Se Eliminará el Concurso" + Concurso , "Mensaje de Confirmacion",
+        int Eleccion = JOptionPane.showOptionDialog(rootPane, "Se Eliminará el Concurso" + Concurso, "Mensaje de Confirmacion",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, "ACEPTAR");
 
         if (Eleccion == JOptionPane.YES_OPTION) {
@@ -805,7 +1090,7 @@ public class AdministradorConcursos extends javax.swing.JFrame {
 
             if (confirmar == JOptionPane.YES_OPTION) {
                 EliminaConcurso Eliminar = new EliminaConcurso();
-                Eliminar.ElinarConcurso(Id);
+                Eliminar.EliminarConcurso(Id);
                 CargaTabla();
                 LimpiaCampos();
                 JOptionPane.showMessageDialog(this, "El Concurso se Eliminó Correctamente");
@@ -888,6 +1173,8 @@ public class AdministradorConcursos extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnRegresaConcursoActionPerformed
 
     private void BtnAsignarConcursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAsignarConcursosActionPerformed
+        String IdCurso = IdConcurso.getText();
+        CargaLista();
         PanelAsignaConcurso.setVisible(true);
         PanelTablaConcursos.setVisible(false);
         BtnPreguntas.setVisible(false);
@@ -898,6 +1185,10 @@ public class AdministradorConcursos extends javax.swing.JFrame {
     private void BoxAmPmInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BoxAmPmInicioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BoxAmPmInicioActionPerformed
+
+    private void ChkConcursoActivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkConcursoActivoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ChkConcursoActivoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -947,16 +1238,47 @@ public class AdministradorConcursos extends javax.swing.JFrame {
     private javax.swing.JButton BtnUsuarios;
     private javax.swing.JTextField BusquedaConcurso;
     private javax.swing.JCheckBox ChkConcursoActivo;
+    public javax.swing.JCheckBox Ck1;
+    public javax.swing.JCheckBox Ck10;
+    public javax.swing.JCheckBox Ck2;
+    public javax.swing.JCheckBox Ck3;
+    public javax.swing.JCheckBox Ck4;
+    public javax.swing.JCheckBox Ck5;
+    public javax.swing.JCheckBox Ck6;
+    public javax.swing.JCheckBox Ck7;
+    public javax.swing.JCheckBox Ck8;
+    public javax.swing.JCheckBox Ck9;
+    public javax.swing.JTextField Cve1;
+    public javax.swing.JTextField Cve10;
+    public javax.swing.JTextField Cve2;
+    public javax.swing.JTextField Cve3;
+    public javax.swing.JTextField Cve4;
+    public javax.swing.JTextField Cve5;
+    public javax.swing.JTextField Cve6;
+    public javax.swing.JTextField Cve7;
+    public javax.swing.JTextField Cve8;
+    public javax.swing.JTextField Cve9;
     private javax.swing.JLabel IcoBuscar;
     private javax.swing.JLabel IdConcurso;
     private javax.swing.JLabel JlMonitorNombre;
     private javax.swing.JLabel LabelEquipo;
     private javax.swing.JLabel LabelId;
+    public javax.swing.JTextField Nm1;
+    public javax.swing.JTextField Nm10;
+    public javax.swing.JTextField Nm2;
+    public javax.swing.JTextField Nm3;
+    public javax.swing.JTextField Nm4;
+    public javax.swing.JTextField Nm5;
+    public javax.swing.JTextField Nm6;
+    public javax.swing.JTextField Nm7;
+    public javax.swing.JTextField Nm8;
+    public javax.swing.JTextField Nm9;
     private javax.swing.JTextField NombreConcurso;
-    private javax.swing.JScrollPane PanelAsignaConcurso;
+    public javax.swing.JPanel PanelAsignaConcurso;
     private javax.swing.JPanel PanelPreguntas;
     private javax.swing.JPanel PanelTablaConcursos;
     private javax.swing.JTable TablaEquipos;
+    public javax.swing.JTextField TituloTxt;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1033,4 +1355,89 @@ public class AdministradorConcursos extends javax.swing.JFrame {
 
         return CboxAmPm;
     }
+
+    private void CargaLista() {
+
+        ConexionDb Db = new ConexionDb();
+        Statement St = Db.Conecxion();
+        ResultSet Consulta;
+
+        try {
+            Consulta = Db.realizarConsulta("SELECT TOP 10 Id, Asignacion FROM [Usuarios] WHERE Perfil = 2 AND Activo = 1", St);
+            if (Consulta.next()) {
+                Cve1.setText(Consulta.getString("Id"));
+                Nm1.setText(Consulta.getString("Asignacion"));
+                Ck1.setVisible(true);
+                Cve1.setVisible(true);
+                Nm1.setVisible(true);
+            }
+            if (Consulta.next()) {
+                Cve2.setText(Consulta.getString("Id"));
+                Nm2.setText(Consulta.getString("Asignacion"));
+                Ck2.setVisible(true);
+                Cve2.setVisible(true);
+                Nm2.setVisible(true);
+            }
+            if (Consulta.next()) {
+                Cve3.setText(Consulta.getString("Id"));
+                Nm3.setText(Consulta.getString("Asignacion"));
+                Ck3.setVisible(true);
+                Cve3.setVisible(true);
+                Nm3.setVisible(true);
+            }
+            if (Consulta.next()) {
+                Cve4.setText(Consulta.getString("Id"));
+                Nm4.setText(Consulta.getString("Asignacion"));
+                Ck4.setVisible(true);
+                Cve4.setVisible(true);
+                Nm4.setVisible(true);
+            }
+            if (Consulta.next()) {
+                Cve5.setText(Consulta.getString("Id"));
+                Nm5.setText(Consulta.getString("Asignacion"));
+                Ck5.setVisible(true);
+                Cve5.setVisible(true);
+                Nm5.setVisible(true);
+            }
+            if (Consulta.next()) {
+                Cve6.setText(Consulta.getString("Id"));
+                Nm6.setText(Consulta.getString("Asignacion"));
+                Ck6.setVisible(true);
+                Cve6.setVisible(true);
+                Nm6.setVisible(true);
+            }
+            if (Consulta.next()) {
+                Cve7.setText(Consulta.getString("Id"));
+                Nm7.setText(Consulta.getString("Asignacion"));
+                Ck7.setVisible(true);
+                Cve7.setVisible(true);
+                Nm7.setVisible(true);
+            }
+            if (Consulta.next()) {
+                Cve8.setText(Consulta.getString("Id"));
+                Nm8.setText(Consulta.getString("Asignacion"));
+                Ck8.setVisible(true);
+                Cve8.setVisible(true);
+                Nm8.setVisible(true);
+            }
+            if (Consulta.next()) {
+                Cve9.setText(Consulta.getString("Id"));
+                Nm9.setText(Consulta.getString("Asignacion"));
+                Ck9.setVisible(true);
+                Cve9.setVisible(true);
+                Nm9.setVisible(true);
+            }
+            if (Consulta.next()) {
+                Cve10.setText(Consulta.getString("Id"));
+                Nm10.setText(Consulta.getString("Asignacion"));
+                Ck10.setVisible(true);
+                Cve10.setVisible(true);
+                Nm10.setVisible(true);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ListaAsignarConcurso.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
 }
