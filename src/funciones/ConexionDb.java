@@ -27,7 +27,7 @@ public class ConexionDb {
     
     public ConexionDb(){
         this.usuario = "sa";
-        this.password = "sqlatl1988";
+        this.password = "sql123";
         this.urlconexion = "jdbc:sqlserver://localhost:1433;databaseName=ConMatAPP";
     }
     
