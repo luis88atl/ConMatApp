@@ -100,7 +100,7 @@ public class AdministradorConcursos extends javax.swing.JFrame {
         BtnPreguntas = new javax.swing.JButton();
         BtnImprimeReporteConcursos = new javax.swing.JButton();
         IcoBuscar = new javax.swing.JLabel();
-        BusquedaEquipo = new javax.swing.JTextField();
+        BusquedaConcurso = new javax.swing.JTextField();
         ChkConcursoActivo = new javax.swing.JCheckBox();
         BoxHorasFinal = new javax.swing.JComboBox<>();
         BoxAmPmFinal = new javax.swing.JComboBox<>();
@@ -415,33 +415,33 @@ public class AdministradorConcursos extends javax.swing.JFrame {
         IcoBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_Search_32px.png"))); // NOI18N
         jPanel2.add(IcoBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 20, -1, 30));
 
-        BusquedaEquipo.setFont(new java.awt.Font("Decker", 1, 14)); // NOI18N
-        BusquedaEquipo.setForeground(new java.awt.Color(153, 153, 153));
-        BusquedaEquipo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        BusquedaEquipo.setText("Realizar Busqueda");
-        BusquedaEquipo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
-        BusquedaEquipo.addFocusListener(new java.awt.event.FocusAdapter() {
+        BusquedaConcurso.setFont(new java.awt.Font("Decker", 1, 14)); // NOI18N
+        BusquedaConcurso.setForeground(new java.awt.Color(153, 153, 153));
+        BusquedaConcurso.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        BusquedaConcurso.setText("Realizar Busqueda");
+        BusquedaConcurso.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
+        BusquedaConcurso.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                BusquedaEquipoFocusLost(evt);
+                BusquedaConcursoFocusLost(evt);
             }
         });
-        BusquedaEquipo.addMouseListener(new java.awt.event.MouseAdapter() {
+        BusquedaConcurso.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                BusquedaEquipoMouseClicked(evt);
+                BusquedaConcursoMouseClicked(evt);
             }
         });
-        BusquedaEquipo.addKeyListener(new java.awt.event.KeyAdapter() {
+        BusquedaConcurso.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                BusquedaEquipoKeyPressed(evt);
+                BusquedaConcursoKeyPressed(evt);
             }
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                BusquedaEquipoKeyReleased(evt);
+                BusquedaConcursoKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                BusquedaEquipoKeyTyped(evt);
+                BusquedaConcursoKeyTyped(evt);
             }
         });
-        jPanel2.add(BusquedaEquipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 10, 370, 40));
+        jPanel2.add(BusquedaConcurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 10, 370, 40));
 
         ChkConcursoActivo.setBackground(new java.awt.Color(255, 255, 255));
         ChkConcursoActivo.setFont(new java.awt.Font("Decker", 1, 14)); // NOI18N
@@ -794,30 +794,21 @@ public class AdministradorConcursos extends javax.swing.JFrame {
 
     private void BtnEliminarConcursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarConcursoActionPerformed
         String Id = IdConcurso.getText();
-        String Equipo = NombreConcurso.getText();
-        String Capitan = (String) BoxAmPmInicio.getSelectedItem();
-        String Universidad = (String) BoxHorasInicio.getSelectedItem();
+        String Concurso = NombreConcurso.getText();
 
         Object[] opciones = {"ACEPTAR", "CANCELAR"};
-        int Eleccion = JOptionPane.showOptionDialog(rootPane, "Se Eliminará " + Equipo + " Asignado a: "
-                + Capitan + " De la Universidad " + Universidad, "Mensaje de Confirmacion",
+        int Eleccion = JOptionPane.showOptionDialog(rootPane, "Se Eliminará el Concurso" + Concurso , "Mensaje de Confirmacion",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, "ACEPTAR");
 
         if (Eleccion == JOptionPane.YES_OPTION) {
             int confirmar = JOptionPane.YES_OPTION;
 
-            Equipo Busca = new Equipo();
-            int Cursos = Busca.ConsultaCursos(Id);
-            if (Cursos > 0) {
-                confirmar = JOptionPane.showOptionDialog(rootPane, "El Equipo" + Equipo + "Tiene " + Cursos + "Cursos Asignados, Desea Eliminarlo", "Mensaje de Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, "ACEPTAR");
-            }
-
             if (confirmar == JOptionPane.YES_OPTION) {
-                Equipo eliminacion = new Equipo();
-                eliminacion.EliminaUsuario(Id);
+                EliminaConcurso Eliminar = new EliminaConcurso();
+                Eliminar.ElinarConcurso(Id);
                 CargaTabla();
                 LimpiaCampos();
-                JOptionPane.showMessageDialog(this, "El Equipo se Eliminó Correctamente");
+                JOptionPane.showMessageDialog(this, "El Concurso se Eliminó Correctamente");
             }
         }
 
@@ -835,29 +826,29 @@ public class AdministradorConcursos extends javax.swing.JFrame {
         BoxAmPmInicio.setModel(ComBoxPmAm());
     }//GEN-LAST:event_BoxAmPmInicioMouseClicked
 
-    private void BusquedaEquipoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BusquedaEquipoKeyPressed
-        Equipo Busqueda = new Equipo();
-        Busqueda.BusquedaEquipo(BusquedaEquipo.getText(), TablaEquipos, NombreColumnas);
-    }//GEN-LAST:event_BusquedaEquipoKeyPressed
+    private void BusquedaConcursoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BusquedaConcursoKeyPressed
+        BuscaConcurso Busqueda = new BuscaConcurso();
+        Busqueda.BusquedaConcurso(BusquedaConcurso.getText(), TablaEquipos, NombreColumnas);
+    }//GEN-LAST:event_BusquedaConcursoKeyPressed
 
-    private void BusquedaEquipoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BusquedaEquipoMouseClicked
-        BusquedaEquipo.setText("");
-        Equipo Busqueda = new Equipo();
-        Busqueda.BusquedaEquipo(BusquedaEquipo.getText(), TablaEquipos, NombreColumnas);
-    }//GEN-LAST:event_BusquedaEquipoMouseClicked
+    private void BusquedaConcursoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BusquedaConcursoMouseClicked
+        BusquedaConcurso.setText("");
+        BuscaConcurso Busqueda = new BuscaConcurso();
+        Busqueda.BusquedaConcurso(BusquedaConcurso.getText(), TablaEquipos, NombreColumnas);
+    }//GEN-LAST:event_BusquedaConcursoMouseClicked
 
-    private void BusquedaEquipoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BusquedaEquipoKeyTyped
+    private void BusquedaConcursoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BusquedaConcursoKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_BusquedaEquipoKeyTyped
+    }//GEN-LAST:event_BusquedaConcursoKeyTyped
 
-    private void BusquedaEquipoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BusquedaEquipoKeyReleased
-        Equipo Busqueda = new Equipo();
-        Busqueda.BusquedaEquipo(BusquedaEquipo.getText(), TablaEquipos, NombreColumnas);
-    }//GEN-LAST:event_BusquedaEquipoKeyReleased
+    private void BusquedaConcursoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BusquedaConcursoKeyReleased
+        BuscaConcurso Busqueda = new BuscaConcurso();
+        Busqueda.BusquedaConcurso(BusquedaConcurso.getText(), TablaEquipos, NombreColumnas);
+    }//GEN-LAST:event_BusquedaConcursoKeyReleased
 
-    private void BusquedaEquipoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_BusquedaEquipoFocusLost
-        BusquedaEquipo.setText("Realizar Busqueda");
-    }//GEN-LAST:event_BusquedaEquipoFocusLost
+    private void BusquedaConcursoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_BusquedaConcursoFocusLost
+        BusquedaConcurso.setText("Realizar Busqueda");
+    }//GEN-LAST:event_BusquedaConcursoFocusLost
 
     private void BoxHorasInicioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_BoxHorasInicioFocusGained
         BoxHorasInicio.setModel(ComboBoxHora());
@@ -954,7 +945,7 @@ public class AdministradorConcursos extends javax.swing.JFrame {
     private javax.swing.JButton BtnRegresaConcurso;
     private javax.swing.JButton BtnResultados;
     private javax.swing.JButton BtnUsuarios;
-    private javax.swing.JTextField BusquedaEquipo;
+    private javax.swing.JTextField BusquedaConcurso;
     private javax.swing.JCheckBox ChkConcursoActivo;
     private javax.swing.JLabel IcoBuscar;
     private javax.swing.JLabel IdConcurso;
@@ -1021,7 +1012,7 @@ public class AdministradorConcursos extends javax.swing.JFrame {
         CboxCapitan.addElement("Asigne Capitan");
         BoxHorasInicio.setModel(CboxUniversidad);
         BoxAmPmInicio.setModel(CboxCapitan);
-        BusquedaEquipo.setText("Realizar Busqueda");
+        BusquedaConcurso.setText("Realizar Busqueda");
     }
 
     private DefaultComboBoxModel ComboBoxHora() {
