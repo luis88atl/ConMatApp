@@ -42,7 +42,7 @@ public class Equipo {
             Statement st = db.Conecxion();
             db.insertaDatos("UPDATE EQUIPOS SET NOMBRE = '" + Equipo + "',"
                     + "UNIVERSIDAD = '" + Universidad + "',"
-                    + "CAPITAN = " + Capitan + ", WHERE ID = " + Id, st);
+                    + "CAPITAN = " + Capitan + " WHERE ID = " + Id, st);
 
 
         } catch (SQLException ex) {
