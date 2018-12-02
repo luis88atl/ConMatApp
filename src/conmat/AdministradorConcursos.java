@@ -5,12 +5,7 @@
  */
 package conmat;
 
-import funciones.ConexionDb;
-import funciones.Equipo;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import funciones.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,11 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -33,7 +25,6 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
-import rsscalelabel.RSScaleLabel;
 
 /**
  *
@@ -43,15 +34,16 @@ public class AdministradorConcursos extends javax.swing.JFrame {
 
     public String usuarioactivo;
     public String idusuarioactivo;
-    public String textomonitor = "Equipos";
+    public String textomonitor = "Concursos";
     private FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo de Imagen", "JPG");
     public String rutaimagen = "";
     Icon icon = null;
     Object[] NombreColumnas = {
         "ID",
-        "NOMBRE",
-        "UNIVERSIDAD",
-        "CAPITAN"
+        "CONCURSO",
+        "ESTADO",
+        "HORA INICIO",
+        "HORA FINAL"
     };
 
     /**
@@ -96,8 +88,8 @@ public class AdministradorConcursos extends javax.swing.JFrame {
         TablaEquipos = new javax.swing.JTable();
         PanelPreguntas = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
-        IdEquipo = new javax.swing.JLabel();
-        InputEquipo = new javax.swing.JTextField();
+        IdConcurso = new javax.swing.JLabel();
+        NombreConcurso = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         LabelEquipo = new javax.swing.JLabel();
         LabelId = new javax.swing.JLabel();
@@ -278,27 +270,27 @@ public class AdministradorConcursos extends javax.swing.JFrame {
 
         jPanel2.add(PanelPreguntas, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 80, 710, 660));
 
-        IdEquipo.setBackground(new java.awt.Color(255, 255, 255));
-        IdEquipo.setFont(new java.awt.Font("Decker", 1, 18)); // NOI18N
-        IdEquipo.setForeground(new java.awt.Color(102, 102, 102));
-        IdEquipo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jPanel2.add(IdEquipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 30, 150, 20));
+        IdConcurso.setBackground(new java.awt.Color(255, 255, 255));
+        IdConcurso.setFont(new java.awt.Font("Decker", 1, 18)); // NOI18N
+        IdConcurso.setForeground(new java.awt.Color(102, 102, 102));
+        IdConcurso.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jPanel2.add(IdConcurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 30, 150, 20));
 
-        InputEquipo.setFont(new java.awt.Font("Decker", 0, 14)); // NOI18N
-        InputEquipo.setForeground(new java.awt.Color(153, 153, 153));
-        InputEquipo.setText("Nombre del Concurso");
-        InputEquipo.setBorder(null);
-        InputEquipo.addFocusListener(new java.awt.event.FocusAdapter() {
+        NombreConcurso.setFont(new java.awt.Font("Decker", 0, 14)); // NOI18N
+        NombreConcurso.setForeground(new java.awt.Color(153, 153, 153));
+        NombreConcurso.setText("Nombre del Concurso");
+        NombreConcurso.setBorder(null);
+        NombreConcurso.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                InputEquipoFocusGained(evt);
+                NombreConcursoFocusGained(evt);
             }
         });
-        InputEquipo.addActionListener(new java.awt.event.ActionListener() {
+        NombreConcurso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                InputEquipoActionPerformed(evt);
+                NombreConcursoActionPerformed(evt);
             }
         });
-        jPanel2.add(InputEquipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 180, 40));
+        jPanel2.add(NombreConcurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 180, 40));
         jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 320, -1));
 
         LabelEquipo.setBackground(new java.awt.Color(255, 255, 255));
@@ -347,6 +339,11 @@ public class AdministradorConcursos extends javax.swing.JFrame {
                 BoxAmPmInicioMouseClicked(evt);
             }
         });
+        BoxAmPmInicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BoxAmPmInicioActionPerformed(evt);
+            }
+        });
         jPanel2.add(BoxAmPmInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 150, 80, 40));
 
         BtnEliminarConcurso.setBackground(new java.awt.Color(255, 255, 255));
@@ -363,7 +360,7 @@ public class AdministradorConcursos extends javax.swing.JFrame {
                 BtnEliminarConcursoActionPerformed(evt);
             }
         });
-        jPanel2.add(BtnEliminarConcurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 760, -1, -1));
+        jPanel2.add(BtnEliminarConcurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 620, -1, -1));
 
         BtnGuardaConcurso.setBackground(new java.awt.Color(255, 255, 255));
         BtnGuardaConcurso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Btn_Guardar.png"))); // NOI18N
@@ -379,7 +376,7 @@ public class AdministradorConcursos extends javax.swing.JFrame {
                 BtnGuardaConcursoActionPerformed(evt);
             }
         });
-        jPanel2.add(BtnGuardaConcurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 760, -1, -1));
+        jPanel2.add(BtnGuardaConcurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 510, -1, -1));
 
         BtnPreguntas.setBackground(new java.awt.Color(255, 255, 255));
         BtnPreguntas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/btn_preguntas.png"))); // NOI18N
@@ -411,7 +408,7 @@ public class AdministradorConcursos extends javax.swing.JFrame {
                 BtnImprimeReporteConcursosActionPerformed(evt);
             }
         });
-        jPanel2.add(BtnImprimeReporteConcursos, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 760, -1, -1));
+        jPanel2.add(BtnImprimeReporteConcursos, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 620, -1, -1));
 
         IcoBuscar.setBackground(new java.awt.Color(255, 255, 255));
         IcoBuscar.setForeground(new java.awt.Color(255, 255, 255));
@@ -502,7 +499,7 @@ public class AdministradorConcursos extends javax.swing.JFrame {
                 BtnLimpiaConcursoActionPerformed(evt);
             }
         });
-        jPanel2.add(BtnLimpiaConcurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 760, -1, -1));
+        jPanel2.add(BtnLimpiaConcurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 510, -1, -1));
 
         PanelAsignaConcurso.setBackground(new java.awt.Color(255, 255, 255));
         PanelAsignaConcurso.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 2, true));
@@ -658,30 +655,61 @@ public class AdministradorConcursos extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BtnCerrarMouseClicked
 
-    private void InputEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InputEquipoActionPerformed
+    private void NombreConcursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NombreConcursoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_InputEquipoActionPerformed
+    }//GEN-LAST:event_NombreConcursoActionPerformed
 
     private void TablaEquiposMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaEquiposMouseClicked
         if (evt.getButton() == 1) {
+            String AmPmInicio = "am";
+            String AmPmFinal = "am";
             int id = TablaEquipos.getSelectedRow();
             try {
                 ResultSet consulta;
                 ConexionDb db = new ConexionDb();
                 Statement st = db.Conecxion();
-                consulta = db.realizarConsulta("SELECT * FROM Consulta_Equipo WHERE ID = "
+                consulta = db.realizarConsulta("SELECT * FROM Consulta_Concursos WHERE ID = "
                         + TablaEquipos.getValueAt(id, 0), st);
                 consulta.next();
-                IdEquipo.setText(consulta.getString("Id"));
-                InputEquipo.setText(consulta.getString("Nombre"));
-                DefaultComboBoxModel CboxUniversidad = new DefaultComboBoxModel();
-                CboxUniversidad.addElement(consulta.getString("Universidad"));
-                DefaultComboBoxModel CboxCapitan = new DefaultComboBoxModel();
-                CboxCapitan.addElement(consulta.getString("Capitan"));
-                BoxHorasInicio.setModel(CboxUniversidad);
-                BoxAmPmInicio.setModel(CboxCapitan);
-                String Idequipo = IdEquipo.getText();
-                CargaImagen(Idequipo);
+                IdConcurso.setText(consulta.getString("Id"));
+                NombreConcurso.setText(consulta.getString("Concurso"));
+                int Estatus = Integer.parseInt(consulta.getString("Estatus"));
+                String HoraInicioTxt = consulta.getString("HoraInicio");
+                String HoraFinalTxt = consulta.getString("HoraFinal");
+                int HoraInicio = Integer.parseInt(HoraInicioTxt.substring(0, 2));
+                int HoraFinal = Integer.parseInt(HoraFinalTxt.substring(0, 2));
+
+                if (HoraInicio > 12) {
+                    HoraInicio = HoraInicio - 12;
+                    AmPmInicio = "pm";
+                }
+
+                if (HoraFinal > 12) {
+                    HoraFinal = HoraFinal - 12;
+                    AmPmFinal = "pm";
+                }
+
+                DefaultComboBoxModel BoxHoraInicio = new DefaultComboBoxModel();
+                BoxHoraInicio.addElement(Integer.toString(HoraInicio) + ":00");
+                BoxHorasInicio.setModel(BoxHoraInicio);
+
+                DefaultComboBoxModel BoxHoraFinal = new DefaultComboBoxModel();
+                BoxHoraFinal.addElement(Integer.toString(HoraFinal) + ":00");
+                BoxHorasFinal.setModel(BoxHoraFinal);
+
+                DefaultComboBoxModel BoxAmPmIn = new DefaultComboBoxModel();
+                BoxAmPmIn.addElement(AmPmInicio);
+                BoxAmPmInicio.setModel(BoxAmPmIn);
+
+                DefaultComboBoxModel BoxAmPmFn = new DefaultComboBoxModel();
+                BoxAmPmFn.addElement(AmPmFinal);
+                BoxAmPmFinal.setModel(BoxAmPmFn);
+
+                if (Estatus == 1) {
+                    ChkConcursoActivo.setSelected(true);
+                } else {
+                    ChkConcursoActivo.setSelected(false);
+                }
             } catch (SQLException e) {
             }
         }
@@ -715,38 +743,40 @@ public class AdministradorConcursos extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnImprimeReporteConcursosActionPerformed
 
     private void BtnGuardaConcursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGuardaConcursoActionPerformed
-        String imagen = this.rutaimagen;
-        String Id = IdEquipo.getText();
-        String Equipo = InputEquipo.getText();
-        String Universidad = (String) BoxHorasInicio.getSelectedItem();
-        String Capitan = (String) BoxAmPmInicio.getSelectedItem();
-        Equipo ComboBox = new Equipo();
-        Universidad = ComboBox.ConsultaUniversidad(Universidad);
-        Capitan = ComboBox.ConsultaCapitan(Capitan);
-        int foto = 1;
-        if (imagen.equals("")) {
-            foto = 0;
+        String Id = IdConcurso.getText();
+        String Concurso = NombreConcurso.getText();
+        String HoraInicio = (String) BoxHorasInicio.getSelectedItem();
+        String AmPmInicio = (String) BoxAmPmInicio.getSelectedItem();
+        String HoraFinal = (String) BoxHorasFinal.getSelectedItem();
+        String AmPmFinal = (String) BoxAmPmFinal.getSelectedItem();
+        boolean Check = ChkConcursoActivo.isSelected();
+        int Estatus;
+        AltaConcurso Guarda = new AltaConcurso();
+        ModificaConcurso Modifica = new ModificaConcurso();
+
+        if (Check != true) {
+            Estatus = 0;
+        } else {
+            Estatus = 1;
         }
 
         if (Id.isEmpty()) {
 
-            //** Mensaje que mostrava si check estaba activo JOptionPane.showMessageDialog(this, Activo);
-            if ((Equipo.isEmpty() || Universidad.equals("Asignar Universidad") || Capitan.equals("Asigne Capitan"))) {
-                JOptionPane.showMessageDialog(this, "Todos los Campos deben ser llenados");
+            //** Se valida que el campo Nombre de Concrso no este vacio
+            if (Concurso.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe Asignar un Nombre al Concurso");
             } else {
-                Equipo Alta = new Equipo();
-                Alta.GuardaEquipo(Equipo, Universidad, Capitan, rutaimagen);
+                Guarda.NuevoConcurso(Concurso, HoraInicio, AmPmInicio, HoraFinal, AmPmFinal, Estatus);
                 CargaTabla();
                 LimpiaCampos();
-                JOptionPane.showMessageDialog(this, "El Equipo se Guardo Correctamente");
+                JOptionPane.showMessageDialog(this, "El Concurso se Guardo Correctamente");
             }
         } else {
             //Se realiza la Modificación del Registro
-            if ((Equipo.isEmpty() || Universidad.equals("Asignar Universidad") || Capitan.equals("Asigne Capitan"))) {
-                JOptionPane.showMessageDialog(this, "Todos los Campos deben ser llenados");
+            if (Concurso.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe Asignar un Nombre al Concurso");
             } else {
-                Equipo Modificacion = new Equipo();
-                Modificacion.ModificaEquipo(Id, Equipo, Universidad, Capitan, imagen, foto);
+                Modifica.ActualizaConcurso(Id, Concurso, HoraInicio, AmPmInicio, HoraFinal, AmPmFinal, Estatus);
             }
             CargaTabla();
             LimpiaCampos();
@@ -763,8 +793,8 @@ public class AdministradorConcursos extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnPreguntasActionPerformed
 
     private void BtnEliminarConcursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarConcursoActionPerformed
-        String Id = IdEquipo.getText();
-        String Equipo = InputEquipo.getText();
+        String Id = IdConcurso.getText();
+        String Equipo = NombreConcurso.getText();
         String Capitan = (String) BoxAmPmInicio.getSelectedItem();
         String Universidad = (String) BoxHorasInicio.getSelectedItem();
 
@@ -793,9 +823,9 @@ public class AdministradorConcursos extends javax.swing.JFrame {
 
     }//GEN-LAST:event_BtnEliminarConcursoActionPerformed
 
-    private void InputEquipoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_InputEquipoFocusGained
-        InputEquipo.setText("");
-    }//GEN-LAST:event_InputEquipoFocusGained
+    private void NombreConcursoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_NombreConcursoFocusGained
+        NombreConcurso.setText("");
+    }//GEN-LAST:event_NombreConcursoFocusGained
 
     private void BoxAmPmInicioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_BoxAmPmInicioFocusGained
         BoxAmPmInicio.setModel(ComBoxPmAm());
@@ -874,6 +904,10 @@ public class AdministradorConcursos extends javax.swing.JFrame {
         BtnRegresaConcurso.setVisible(true);
     }//GEN-LAST:event_BtnAsignarConcursosActionPerformed
 
+    private void BoxAmPmInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BoxAmPmInicioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BoxAmPmInicioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -923,11 +957,11 @@ public class AdministradorConcursos extends javax.swing.JFrame {
     private javax.swing.JTextField BusquedaEquipo;
     private javax.swing.JCheckBox ChkConcursoActivo;
     private javax.swing.JLabel IcoBuscar;
-    private javax.swing.JLabel IdEquipo;
-    private javax.swing.JTextField InputEquipo;
+    private javax.swing.JLabel IdConcurso;
     private javax.swing.JLabel JlMonitorNombre;
     private javax.swing.JLabel LabelEquipo;
     private javax.swing.JLabel LabelId;
+    private javax.swing.JTextField NombreConcurso;
     private javax.swing.JScrollPane PanelAsignaConcurso;
     private javax.swing.JPanel PanelPreguntas;
     private javax.swing.JPanel PanelTablaConcursos;
@@ -965,12 +999,12 @@ public class AdministradorConcursos extends javax.swing.JFrame {
             ResultSet consulta;
             ConexionDb db = new ConexionDb();
             Statement st = db.Conecxion();
-            consulta = db.realizarConsulta("SELECT * FROM Consulta_Equipo", st);
+            consulta = db.realizarConsulta("SELECT * FROM Consulta_Concursos", st);
             DefaultTableModel tabla = new DefaultTableModel(NombreColumnas, WIDTH);
             TablaEquipos.setModel(tabla);
             while (consulta.next()) {
-                tabla.addRow(new Object[]{consulta.getString("Id"), consulta.getString("Nombre"), consulta.getString("Universidad"),
-                    consulta.getString("Capitan")});
+                tabla.addRow(new Object[]{consulta.getString("Id"), consulta.getString("Concurso"), consulta.getString("Estatus"),
+                    consulta.getString("HoraInicio"), consulta.getString("HoraFinal")});
             }
             tabla.removeRow(0);
         } catch (SQLException ex) {
@@ -979,8 +1013,8 @@ public class AdministradorConcursos extends javax.swing.JFrame {
     }
 
     private void LimpiaCampos() {
-        IdEquipo.setText("");
-        InputEquipo.setText("Nuevo Usuario");
+        IdConcurso.setText("");
+        NombreConcurso.setText("Nuevo Usuario");
         DefaultComboBoxModel CboxUniversidad = new DefaultComboBoxModel();
         DefaultComboBoxModel CboxCapitan = new DefaultComboBoxModel();
         CboxUniversidad.addElement("Asignar Universidad");
@@ -988,26 +1022,24 @@ public class AdministradorConcursos extends javax.swing.JFrame {
         BoxHorasInicio.setModel(CboxUniversidad);
         BoxAmPmInicio.setModel(CboxCapitan);
         BusquedaEquipo.setText("Realizar Busqueda");
-        ImagenEquipo.setIcon(icon);
-        rutaimagen = "";
     }
 
     private DefaultComboBoxModel ComboBoxHora() {
         int h = 1;
-            DefaultComboBoxModel Cbox = new DefaultComboBoxModel();
-            while (h <= 12) {
-                String hora = Integer.toString(h) + ":00";
-                Cbox.addElement(hora);
-                h++;
-            }
-            return Cbox;
+        DefaultComboBoxModel Cbox = new DefaultComboBoxModel();
+        while (h <= 12) {
+            String hora = Integer.toString(h) + ":00";
+            Cbox.addElement(hora);
+            h++;
+        }
+        return Cbox;
     }
-    
-    private DefaultComboBoxModel ComBoxPmAm(){
+
+    private DefaultComboBoxModel ComBoxPmAm() {
         DefaultComboBoxModel CboxAmPm = new DefaultComboBoxModel();
         CboxAmPm.addElement("am");
         CboxAmPm.addElement("pm");
-        
+
         return CboxAmPm;
     }
 }
