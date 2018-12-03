@@ -20,20 +20,21 @@ import javax.swing.table.DefaultTableModel;
  */
 public class BuscaConcurso {
 
+    ConexionDb Db = new ConexionDb();
+    Statement St = Db.Conecxion();
+    ResultSet Consulta;
+
     public void BusquedaConcurso(String text, JTable TablaEquipos, Object[] NombreColumnas) {
-        ConexionDb db = new ConexionDb();
-        Statement st = db.Conecxion();
-        ResultSet consulta;
         try {
-            consulta = db.realizarConsulta("SELECT * FROM Consulta_Concursos WHERE "
+            Consulta = Db.realizarConsulta("SELECT * FROM Consulta_Concursos WHERE "
                     + "Id LIKE '%" + text + "%' OR "
-                    + "Concurso LIKE '%" + text + "%'", st);
+                    + "Concurso LIKE '%" + text + "%'", St);
 
             DefaultTableModel tabla = new DefaultTableModel(NombreColumnas, WIDTH);
             TablaEquipos.setModel(tabla);
-            while (consulta.next()) {
-                tabla.addRow(new Object[]{consulta.getString("Id"), consulta.getString("Concurso"), consulta.getString("Estatus"),
-                    consulta.getString("HoraInicio"), consulta.getString("HoraFinal")});
+            while (Consulta.next()) {
+                tabla.addRow(new Object[]{Consulta.getString("Id"), Consulta.getString("Concurso"), Consulta.getString("Estatus"),
+                    Consulta.getString("HoraInicio"), Consulta.getString("HoraFinal")});
             }
             tabla.removeRow(0);
         } catch (SQLException ex) {

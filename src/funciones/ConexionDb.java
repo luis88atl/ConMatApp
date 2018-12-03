@@ -11,6 +11,7 @@ import static java.sql.ResultSet.CONCUR_READ_ONLY;
 import static java.sql.ResultSet.TYPE_SCROLL_SENSITIVE;
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
+import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
@@ -24,6 +25,11 @@ public class ConexionDb {
     
     public Connection cnxion;
     public Statement st;
+    
+    static Connection contacto = null;
+    public static String usuarioS="sa";
+    public static String passwordS="sql123";
+    public static boolean status = false;
     
     public ConexionDb(){
         this.usuario = "sa";
@@ -41,6 +47,28 @@ public class ConexionDb {
             showMessageDialog(null, ex);
         }
         return st;
+    }
+    
+    public static Connection getConexion() {
+        status=false;
+        
+        String url = "jdbc:sqlserver://LAPTOP-RAABRTCN:1433;databaseName=ConMatAPP";
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        } catch (ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "no se pudo establecer conección revisar driver" + e.getMessage(),
+                    "error de conexión", JOptionPane.ERROR_MESSAGE);
+        }
+
+        try {
+            contacto = DriverManager.getConnection(url,ConexionDb.usuarioS ,ConexionDb.passwordS);
+            status=true;
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "ERROR " + e.getMessage(),
+                    "error de conexión", JOptionPane.ERROR_MESSAGE);
+        }
+        return contacto;
     }
     
     public ResultSet realizarConsulta(String consulta, Statement st) throws SQLException{        

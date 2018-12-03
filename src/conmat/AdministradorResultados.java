@@ -5,12 +5,10 @@
  */
 package conmat;
 
+import funciones.BusquedaResultados;
 import funciones.Usuario;
 import funciones.ConexionDb;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import funciones.MuestraResultados;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,11 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -33,7 +26,6 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
-import rsscalelabel.RSScaleLabel;
 
 /**
  *
@@ -43,18 +35,17 @@ public class AdministradorResultados extends javax.swing.JFrame {
 
     public String usuarioactivo;
     public String idusuarioactivo;
-    public String textomonitor = "Usuarios";
+    public String textomonitor = "Resultados";
     private FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo de Imagen", "JPG");
-    public String rutaimagen = "";
-    String idperfil = null;
-    Icon icon = null;
     Object[] NombreColumnas = {
         "ID",
-        "USUARIO",
-        "CONTRASEÑA",
-        "PERFIL",
-        "ASIGNACION",
-        "ACTIVO"
+        "CONCURSO",
+        "EQUIPO",
+        "CAPITAN",
+        "ACIERTOS",
+        "ERRORES",
+        "PROMEDIO",
+        "DURACION"
     };
 
     /**
@@ -65,10 +56,8 @@ public class AdministradorResultados extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         JlMonitorNombre.setText(textomonitor);
         monitorinformacion.setText(usuarioactivo);
-        rutaimagen = "";
-        CargaTabla();
-        Combobox();
-
+        MuestraResultados Tabla = new MuestraResultados();
+        Tabla.Resultados(TablaResultados, NombreColumnas);
     }
 
     /**
@@ -83,34 +72,18 @@ public class AdministradorResultados extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         JlMonitorNombre = new javax.swing.JLabel();
-        JbtnUsuarios = new javax.swing.JButton();
-        JbtnClientes = new javax.swing.JButton();
-        JbtnProveedores = new javax.swing.JButton();
-        JbtnInventario = new javax.swing.JButton();
+        BtnUsuarios = new javax.swing.JButton();
+        BtnEquipos = new javax.swing.JButton();
+        BtnResultados = new javax.swing.JButton();
+        BtnConcursos = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        TablaUsuarios = new javax.swing.JTable();
+        TablaResultados = new javax.swing.JTable();
         IdUsuarioAlta = new javax.swing.JLabel();
-        UsuarioAlta = new javax.swing.JTextField();
-        jSeparator2 = new javax.swing.JSeparator();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        ContrasenaAlta = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jSeparator4 = new javax.swing.JSeparator();
-        PerfilAlta = new javax.swing.JComboBox<>();
-        AsignacionAlta = new javax.swing.JTextField();
-        jSeparator5 = new javax.swing.JSeparator();
-        jLabel8 = new javax.swing.JLabel();
-        ActivarAlta = new javax.swing.JCheckBox();
-        EliminarAltaUsuario = new javax.swing.JButton();
-        GuardaAltaUsuario = new javax.swing.JButton();
-        LimpiaAltaUsuario = new javax.swing.JButton();
         ImprimeReporteUsuarios = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        BusquedaUsuario = new javax.swing.JTextField();
-        FotoUsuario = new javax.swing.JLabel();
+        BusquedaResultados = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         monitorinformacion = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -138,69 +111,69 @@ public class AdministradorResultados extends javax.swing.JFrame {
         JlMonitorNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanel1.add(JlMonitorNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 150, 40));
 
-        JbtnUsuarios.setBackground(new java.awt.Color(255, 255, 255));
-        JbtnUsuarios.setForeground(new java.awt.Color(255, 255, 255));
-        JbtnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/usuarios.png"))); // NOI18N
-        JbtnUsuarios.setBorder(null);
-        JbtnUsuarios.setContentAreaFilled(false);
-        JbtnUsuarios.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        JbtnUsuarios.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
-        JbtnUsuarios.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
-        JbtnUsuarios.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
-        JbtnUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+        BtnUsuarios.setBackground(new java.awt.Color(255, 255, 255));
+        BtnUsuarios.setForeground(new java.awt.Color(255, 255, 255));
+        BtnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/usuarios.png"))); // NOI18N
+        BtnUsuarios.setBorder(null);
+        BtnUsuarios.setContentAreaFilled(false);
+        BtnUsuarios.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BtnUsuarios.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
+        BtnUsuarios.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
+        BtnUsuarios.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
+        BtnUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JbtnUsuariosMouseClicked(evt);
+                BtnUsuariosMouseClicked(evt);
             }
         });
-        jPanel1.add(JbtnUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, -1, -1));
+        jPanel1.add(BtnUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, -1, -1));
 
-        JbtnClientes.setBackground(new java.awt.Color(255, 255, 255));
-        JbtnClientes.setForeground(new java.awt.Color(255, 255, 255));
-        JbtnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Clientes100.png"))); // NOI18N
-        JbtnClientes.setBorder(null);
-        JbtnClientes.setContentAreaFilled(false);
-        JbtnClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        JbtnClientes.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
-        JbtnClientes.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
-        JbtnClientes.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
-        JbtnClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+        BtnEquipos.setBackground(new java.awt.Color(255, 255, 255));
+        BtnEquipos.setForeground(new java.awt.Color(255, 255, 255));
+        BtnEquipos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Proveedores.png"))); // NOI18N
+        BtnEquipos.setBorder(null);
+        BtnEquipos.setContentAreaFilled(false);
+        BtnEquipos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BtnEquipos.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
+        BtnEquipos.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
+        BtnEquipos.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
+        BtnEquipos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JbtnClientesMouseClicked(evt);
+                BtnEquiposMouseClicked(evt);
             }
         });
-        jPanel1.add(JbtnClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, -1, -1));
+        jPanel1.add(BtnEquipos, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, -1, -1));
 
-        JbtnProveedores.setBackground(new java.awt.Color(255, 255, 255));
-        JbtnProveedores.setForeground(new java.awt.Color(255, 255, 255));
-        JbtnProveedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Proveedores.png"))); // NOI18N
-        JbtnProveedores.setBorder(null);
-        JbtnProveedores.setContentAreaFilled(false);
-        JbtnProveedores.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        JbtnProveedores.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
-        JbtnProveedores.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
-        JbtnProveedores.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
-        JbtnProveedores.addMouseListener(new java.awt.event.MouseAdapter() {
+        BtnResultados.setBackground(new java.awt.Color(255, 255, 255));
+        BtnResultados.setForeground(new java.awt.Color(255, 255, 255));
+        BtnResultados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Inventario.png"))); // NOI18N
+        BtnResultados.setBorder(null);
+        BtnResultados.setContentAreaFilled(false);
+        BtnResultados.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BtnResultados.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
+        BtnResultados.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
+        BtnResultados.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
+        BtnResultados.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JbtnProveedoresMouseClicked(evt);
+                BtnResultadosMouseClicked(evt);
             }
         });
-        jPanel1.add(JbtnProveedores, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, -1, -1));
+        jPanel1.add(BtnResultados, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, -1, -1));
 
-        JbtnInventario.setBackground(new java.awt.Color(255, 255, 255));
-        JbtnInventario.setForeground(new java.awt.Color(255, 255, 255));
-        JbtnInventario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Inventario.png"))); // NOI18N
-        JbtnInventario.setBorder(null);
-        JbtnInventario.setContentAreaFilled(false);
-        JbtnInventario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        JbtnInventario.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
-        JbtnInventario.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
-        JbtnInventario.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
-        JbtnInventario.addMouseListener(new java.awt.event.MouseAdapter() {
+        BtnConcursos.setBackground(new java.awt.Color(255, 255, 255));
+        BtnConcursos.setForeground(new java.awt.Color(255, 255, 255));
+        BtnConcursos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icono_concurso_100.png"))); // NOI18N
+        BtnConcursos.setBorder(null);
+        BtnConcursos.setContentAreaFilled(false);
+        BtnConcursos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BtnConcursos.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
+        BtnConcursos.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
+        BtnConcursos.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/select.png"))); // NOI18N
+        BtnConcursos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JbtnInventarioMouseClicked(evt);
+                BtnConcursosMouseClicked(evt);
             }
         });
-        jPanel1.add(JbtnInventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, -1, -1));
+        jPanel1.add(BtnConcursos, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 210, 710));
 
@@ -218,9 +191,9 @@ public class AdministradorResultados extends javax.swing.JFrame {
         jPanel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 2, true));
         jPanel5.setForeground(new java.awt.Color(255, 255, 255));
 
-        TablaUsuarios.setFont(new java.awt.Font("Decker", 0, 14)); // NOI18N
-        TablaUsuarios.setForeground(new java.awt.Color(153, 153, 153));
-        TablaUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+        TablaResultados.setFont(new java.awt.Font("Decker", 0, 14)); // NOI18N
+        TablaResultados.setForeground(new java.awt.Color(153, 153, 153));
+        TablaResultados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -228,181 +201,31 @@ public class AdministradorResultados extends javax.swing.JFrame {
 
             }
         ));
-        TablaUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+        TablaResultados.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                TablaUsuariosMouseClicked(evt);
+                TablaResultadosMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(TablaUsuarios);
+        jScrollPane1.setViewportView(TablaResultados);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 926, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
         );
 
-        jPanel2.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 80, 660, 440));
+        jPanel2.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, 930, 490));
 
         IdUsuarioAlta.setBackground(new java.awt.Color(255, 255, 255));
         IdUsuarioAlta.setFont(new java.awt.Font("Decker", 1, 18)); // NOI18N
         IdUsuarioAlta.setForeground(new java.awt.Color(102, 102, 102));
         IdUsuarioAlta.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jPanel2.add(IdUsuarioAlta, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 30, 150, 20));
-
-        UsuarioAlta.setFont(new java.awt.Font("Decker", 0, 14)); // NOI18N
-        UsuarioAlta.setForeground(new java.awt.Color(153, 153, 153));
-        UsuarioAlta.setText("Nuevo Usuario");
-        UsuarioAlta.setBorder(null);
-        UsuarioAlta.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                UsuarioAltaFocusGained(evt);
-            }
-        });
-        UsuarioAlta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UsuarioAltaActionPerformed(evt);
-            }
-        });
-        jPanel2.add(UsuarioAlta, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 260, 180, 40));
-        jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 280, -1));
-
-        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel4.setFont(new java.awt.Font("Decker", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel4.setText("Usuario:");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 90, 40));
-
-        jLabel5.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel5.setFont(new java.awt.Font("Decker", 1, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText("ID:");
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 40, 20));
-
-        ContrasenaAlta.setFont(new java.awt.Font("Decker", 0, 14)); // NOI18N
-        ContrasenaAlta.setForeground(new java.awt.Color(153, 153, 153));
-        ContrasenaAlta.setText("Ingrese Contraseña");
-        ContrasenaAlta.setBorder(null);
-        ContrasenaAlta.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                ContrasenaAltaFocusGained(evt);
-            }
-        });
-        ContrasenaAlta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ContrasenaAltaActionPerformed(evt);
-            }
-        });
-        jPanel2.add(ContrasenaAlta, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 310, 180, 40));
-
-        jLabel7.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel7.setFont(new java.awt.Font("Decker", 1, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel7.setText("Contraseña:");
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, -1, 40));
-        jPanel2.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, 280, -1));
-
-        PerfilAlta.setFont(new java.awt.Font("Decker", 1, 14)); // NOI18N
-        PerfilAlta.setForeground(new java.awt.Color(102, 102, 102));
-        PerfilAlta.setMaximumRowCount(1000);
-        PerfilAlta.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione Perfil" }));
-        PerfilAlta.setBorder(null);
-        PerfilAlta.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                PerfilAltaFocusGained(evt);
-            }
-        });
-        PerfilAlta.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                PerfilAltaMouseClicked(evt);
-            }
-        });
-        jPanel2.add(PerfilAlta, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 280, 40));
-
-        AsignacionAlta.setFont(new java.awt.Font("Decker", 0, 14)); // NOI18N
-        AsignacionAlta.setForeground(new java.awt.Color(153, 153, 153));
-        AsignacionAlta.setText("Usuario Asignado a:");
-        AsignacionAlta.setBorder(null);
-        AsignacionAlta.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                AsignacionAltaFocusGained(evt);
-            }
-        });
-        AsignacionAlta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AsignacionAltaActionPerformed(evt);
-            }
-        });
-        jPanel2.add(AsignacionAlta, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 420, 180, 40));
-        jPanel2.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 460, 280, -1));
-
-        jLabel8.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel8.setFont(new java.awt.Font("Decker", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel8.setText("Asignación:");
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, -1, 40));
-
-        ActivarAlta.setBackground(new java.awt.Color(255, 255, 255));
-        ActivarAlta.setFont(new java.awt.Font("Decker", 1, 14)); // NOI18N
-        ActivarAlta.setForeground(new java.awt.Color(102, 102, 102));
-        ActivarAlta.setSelected(true);
-        ActivarAlta.setText("Activar Usuario");
-        ActivarAlta.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
-        jPanel2.add(ActivarAlta, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, -1, 40));
-
-        EliminarAltaUsuario.setBackground(new java.awt.Color(255, 255, 255));
-        EliminarAltaUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Btn_Eliminar.png"))); // NOI18N
-        EliminarAltaUsuario.setBorder(null);
-        EliminarAltaUsuario.setBorderPainted(false);
-        EliminarAltaUsuario.setContentAreaFilled(false);
-        EliminarAltaUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        EliminarAltaUsuario.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Btn_Check_Rojo.jpg"))); // NOI18N
-        EliminarAltaUsuario.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Btn_Check_Rojo.jpg"))); // NOI18N
-        EliminarAltaUsuario.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Btn_Check_Rojo.jpg"))); // NOI18N
-        EliminarAltaUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EliminarAltaUsuarioActionPerformed(evt);
-            }
-        });
-        jPanel2.add(EliminarAltaUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 550, -1, -1));
-
-        GuardaAltaUsuario.setBackground(new java.awt.Color(255, 255, 255));
-        GuardaAltaUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Btn_Guardar.png"))); // NOI18N
-        GuardaAltaUsuario.setBorder(null);
-        GuardaAltaUsuario.setBorderPainted(false);
-        GuardaAltaUsuario.setContentAreaFilled(false);
-        GuardaAltaUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        GuardaAltaUsuario.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Btn_Check_Verde.png"))); // NOI18N
-        GuardaAltaUsuario.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Btn_Check_Verde.png"))); // NOI18N
-        GuardaAltaUsuario.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Btn_Check_Verde.png"))); // NOI18N
-        GuardaAltaUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GuardaAltaUsuarioActionPerformed(evt);
-            }
-        });
-        jPanel2.add(GuardaAltaUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 550, -1, -1));
-
-        LimpiaAltaUsuario.setBackground(new java.awt.Color(255, 255, 255));
-        LimpiaAltaUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Btn_Limpiar.jpg"))); // NOI18N
-        LimpiaAltaUsuario.setBorder(null);
-        LimpiaAltaUsuario.setBorderPainted(false);
-        LimpiaAltaUsuario.setContentAreaFilled(false);
-        LimpiaAltaUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        LimpiaAltaUsuario.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Btn_Check_Verde.png"))); // NOI18N
-        LimpiaAltaUsuario.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Btn_Check_Verde.png"))); // NOI18N
-        LimpiaAltaUsuario.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Btn_Check_Verde.png"))); // NOI18N
-        LimpiaAltaUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LimpiaAltaUsuarioActionPerformed(evt);
-            }
-        });
-        jPanel2.add(LimpiaAltaUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 550, -1, -1));
 
         ImprimeReporteUsuarios.setBackground(new java.awt.Color(255, 255, 255));
         ImprimeReporteUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Btn_Imprimir.png"))); // NOI18N
@@ -418,50 +241,40 @@ public class AdministradorResultados extends javax.swing.JFrame {
                 ImprimeReporteUsuariosActionPerformed(evt);
             }
         });
-        jPanel2.add(ImprimeReporteUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 550, -1, -1));
+        jPanel2.add(ImprimeReporteUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 580, -1, -1));
 
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_Search_32px.png"))); // NOI18N
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 20, -1, 30));
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 30, -1, 30));
 
-        BusquedaUsuario.setFont(new java.awt.Font("Decker", 1, 14)); // NOI18N
-        BusquedaUsuario.setForeground(new java.awt.Color(153, 153, 153));
-        BusquedaUsuario.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        BusquedaUsuario.setText("Realizar Busqueda");
-        BusquedaUsuario.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
-        BusquedaUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
+        BusquedaResultados.setFont(new java.awt.Font("Decker", 1, 14)); // NOI18N
+        BusquedaResultados.setForeground(new java.awt.Color(153, 153, 153));
+        BusquedaResultados.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        BusquedaResultados.setText("Realizar Busqueda");
+        BusquedaResultados.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
+        BusquedaResultados.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                BusquedaUsuarioFocusLost(evt);
+                BusquedaResultadosFocusLost(evt);
             }
         });
-        BusquedaUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+        BusquedaResultados.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                BusquedaUsuarioMouseClicked(evt);
+                BusquedaResultadosMouseClicked(evt);
             }
         });
-        BusquedaUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+        BusquedaResultados.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                BusquedaUsuarioKeyPressed(evt);
+                BusquedaResultadosKeyPressed(evt);
             }
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                BusquedaUsuarioKeyReleased(evt);
+                BusquedaResultadosKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                BusquedaUsuarioKeyTyped(evt);
+                BusquedaResultadosKeyTyped(evt);
             }
         });
-        jPanel2.add(BusquedaUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 10, 210, 40));
-
-        FotoUsuario.setBackground(new java.awt.Color(255, 255, 255));
-        FotoUsuario.setForeground(new java.awt.Color(255, 255, 255));
-        FotoUsuario.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
-        FotoUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                FotoUsuarioMouseClicked(evt);
-            }
-        });
-        jPanel2.add(FotoUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 150, 170));
+        jPanel2.add(BusquedaResultados, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 20, 360, 40));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 40, 1010, 670));
 
@@ -528,41 +341,21 @@ public class AdministradorResultados extends javax.swing.JFrame {
         mandadatos();
     }//GEN-LAST:event_jPanel1MouseMoved
 
-    private void JbtnUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JbtnUsuariosMouseClicked
+    private void BtnUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnUsuariosMouseClicked
         JlMonitorNombre.setText("Usuarios");
         AdministradorResultados pantallausuarios = new AdministradorResultados();
         pantallausuarios.recibeusuario(idusuarioactivo, usuarioactivo);
         pantallausuarios.setVisible(true);
         dispose();
-    }//GEN-LAST:event_JbtnUsuariosMouseClicked
+    }//GEN-LAST:event_BtnUsuariosMouseClicked
 
-    private void JbtnClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JbtnClientesMouseClicked
-        JlMonitorNombre.setText("Clientes");
-        Clientes pantallaclientes = new Clientes();
-        pantallaclientes.recibeusuario(idusuarioactivo, usuarioactivo);
-        pantallaclientes.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_JbtnClientesMouseClicked
-
-    private void JbtnProveedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JbtnProveedoresMouseClicked
-        JlMonitorNombre.setText("Proveedores");
-        Proveedores pantallaproveedores = new Proveedores();
-        pantallaproveedores.recibeusuario(idusuarioactivo, usuarioactivo);
-        pantallaproveedores.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_JbtnProveedoresMouseClicked
-
-    private void JbtnInventarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JbtnInventarioMouseClicked
+    private void BtnResultadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnResultadosMouseClicked
         JlMonitorNombre.setText("Inventario");
-        Inventarios pantallainventario = new Inventarios();
-        pantallainventario.recibeusuario(idusuarioactivo, usuarioactivo);
-        pantallainventario.setVisible(true);
+        AdministradorResultados pantallaresultados = new AdministradorResultados();
+        pantallaresultados.recibeusuario(idusuarioactivo, usuarioactivo);
+        pantallaresultados.setVisible(true);
         dispose();
-    }//GEN-LAST:event_JbtnInventarioMouseClicked
-
-    private void jPanel2MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseMoved
-        mandadatos();
-    }//GEN-LAST:event_jPanel2MouseMoved
+    }//GEN-LAST:event_BtnResultadosMouseClicked
 
     private void jPanel3MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseMoved
         mandadatos();
@@ -580,58 +373,45 @@ public class AdministradorResultados extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jLabel2MouseClicked
 
-    private void UsuarioAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsuarioAltaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_UsuarioAltaActionPerformed
+    private void jPanel2MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseMoved
+        mandadatos();
+    }//GEN-LAST:event_jPanel2MouseMoved
 
-    private void ContrasenaAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContrasenaAltaActionPerformed
+    private void BusquedaResultadosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BusquedaResultadosKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_ContrasenaAltaActionPerformed
+    }//GEN-LAST:event_BusquedaResultadosKeyTyped
 
-    private void AsignacionAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AsignacionAltaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_AsignacionAltaActionPerformed
+    private void BusquedaResultadosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BusquedaResultadosKeyReleased
+        BusquedaResultados Busqueda = new BusquedaResultados();
+        Busqueda.Resultados(BusquedaResultados.getText(), TablaResultados, NombreColumnas);
+    }//GEN-LAST:event_BusquedaResultadosKeyReleased
 
-    private void TablaUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaUsuariosMouseClicked
-        if (evt.getButton() == 1) {
-            int id = TablaUsuarios.getSelectedRow();
-            try {
-                ResultSet consulta;
-                ConexionDb db = new ConexionDb();
-                Statement st = db.Conecxion();
-                consulta = db.realizarConsulta("SELECT * FROM Consulta_Usuarios WHERE ID = "
-                        + TablaUsuarios.getValueAt(id, 0), st);
-                consulta.next();
-                IdUsuarioAlta.setText(consulta.getString("ID"));
-                UsuarioAlta.setText(consulta.getString("USUARIO"));
-                ContrasenaAlta.setText((String) TablaUsuarios.getValueAt(id, 2));
-                DefaultComboBoxModel cbox = new DefaultComboBoxModel();
-                cbox.addElement(consulta.getString("PERFIL"));
-                PerfilAlta.setModel(cbox);
-                String idusuario = IdUsuarioAlta.getText();
-                CargaImagen(idusuario);
-                if ("1".equals(consulta.getString("ACTIVO"))) {
-                    ActivarAlta.setSelected(true);
-                } else {
-                    ActivarAlta.setSelected(false);
-                }
-                AsignacionAlta.setText(consulta.getString("ASIGNACION"));
-            } catch (SQLException e) {
-            }
-        }
-    }//GEN-LAST:event_TablaUsuariosMouseClicked
+    private void BusquedaResultadosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BusquedaResultadosKeyPressed
+        BusquedaResultados Busqueda = new BusquedaResultados();
+        Busqueda.Resultados(BusquedaResultados.getText(), TablaResultados, NombreColumnas);
+    }//GEN-LAST:event_BusquedaResultadosKeyPressed
+
+    private void BusquedaResultadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BusquedaResultadosMouseClicked
+        BusquedaResultados.setText("");
+        BusquedaResultados Busqueda = new BusquedaResultados();
+        Busqueda.Resultados(BusquedaResultados.getText(), TablaResultados, NombreColumnas);
+    }//GEN-LAST:event_BusquedaResultadosMouseClicked
+
+    private void BusquedaResultadosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_BusquedaResultadosFocusLost
+        BusquedaResultados.setText("Realizar Busqueda");
+    }//GEN-LAST:event_BusquedaResultadosFocusLost
 
     private void ImprimeReporteUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ImprimeReporteUsuariosActionPerformed
         /**
-         * PDFusuarios imprimepdf = new PDFusuarios();
+        * PDFusuarios imprimepdf = new PDFusuarios();
         Date fecha = new Date();
         fecha.getTime();
         imprimepdf.GeneraPDF("REPORTE DE USUARIOS", "ESTE ES EL REPORTE DE USUARIOS", "Guadalajara Jal " + fecha,
-                "C:\\Users\\Administrador.LAPTOP-A8U540A4\\Documents\\NetBeansProjects\\OnlineStore\\src\\Imagenes\\logo.png",
-                "C:\\Users\\Administrador.LAPTOP-A8U540A4\\Desktop\\Prueba.pdf", null, TablaUsuarios);
+            "C:\\Users\\Administrador.LAPTOP-A8U540A4\\Documents\\NetBeansProjects\\OnlineStore\\src\\Imagenes\\logo.png",
+            "C:\\Users\\Administrador.LAPTOP-A8U540A4\\Desktop\\Prueba.pdf", null, TablaUsuarios);
         **/
-                try {
-            ConexionDB cn = new ConexionDB();
+        try {
+            ConexionDb cn = new ConexionDb();
             Connection cnsql = DriverManager.getConnection(cn.urlconexion, cn.usuario, cn.password);
             JasperReport reporte;
             String path = (getClass().getResource("../Reportes/ERP-Usuarios.jasper").getPath());
@@ -643,145 +423,41 @@ public class AdministradorResultados extends javax.swing.JFrame {
             vistareporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             vistareporte.setVisible(true);
         } catch (JRException | SQLException ex) {
-            Logger.getLogger(Inventarios.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdministradorResultados.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_ImprimeReporteUsuariosActionPerformed
 
-    private void GuardaAltaUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardaAltaUsuarioActionPerformed
-        String imagen = this.rutaimagen;
-        String id = IdUsuarioAlta.getText();
-        String Usuario = UsuarioAlta.getText();
-        String Contrasena = ContrasenaAlta.getText();
-        boolean Check = ActivarAlta.isSelected();
-        String Activado;
-        String Asignacion = AsignacionAlta.getText();
-        int foto = 1;
-        if(imagen.equals("")){
-            foto = 0;
-        }
+    private void TablaResultadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaResultadosMouseClicked
+        if (evt.getButton() == 1) {
+            int id = TablaResultados.getSelectedRow();
+            try {
+                ResultSet consulta;
+                ConexionDb db = new ConexionDb();
+                Statement st = db.Conecxion();
+                consulta = db.realizarConsulta("SELECT * FROM Consulta_Usuarios WHERE ID = "
+                    + TablaResultados.getValueAt(id, 0), st);
+                consulta.next();
 
-        if (Check != true) {
-            Activado = "0";
-        } else {
-            Activado = "1";
-        }
-
-        if (id.isEmpty()) {
-
-            //** Mensaje que mostrava si check estaba activo JOptionPane.showMessageDialog(this, Activo);
-            if ((Usuario.isEmpty() || Contrasena.isEmpty() || idperfil.isEmpty() || Asignacion.isEmpty())) {
-                JOptionPane.showMessageDialog(this, "Todos los Campos deben ser llenados");
-            } else {
-                Usuario alta = new Usuario();
-                alta.GuardaUsuario(Usuario, Contrasena, idperfil, Activado, Asignacion, rutaimagen);
-                CargaTabla();
-                LimpiaCampos();
-                JOptionPane.showMessageDialog(this, "El Usuario se Guardo Correctamente");
-            }
-        } else {
-            //Se realiza la Modificación del Registro
-            if ((Usuario.isEmpty() || Contrasena.isEmpty() || idperfil.isEmpty() || Asignacion.isEmpty())) {
-                JOptionPane.showMessageDialog(this, "Todos los Campos deben ser llenados");
-            } else {
-                Usuario modificacion = new Usuario();
-                if (Contrasena.equals("******")) {
-                    modificacion.SinContrasena(id, Usuario, idperfil, Activado, Asignacion, imagen, foto);
-                } else {
-                    modificacion.ModificaUsuario(id, Usuario, Contrasena, idperfil, Activado, Asignacion, imagen, foto);
-                }
-                CargaTabla();
-                LimpiaCampos();
-                JOptionPane.showMessageDialog(this, "El Usuario se Modificó Correctamente");
+            } catch (SQLException e) {
             }
         }
-    }//GEN-LAST:event_GuardaAltaUsuarioActionPerformed
+    }//GEN-LAST:event_TablaResultadosMouseClicked
 
-    private void LimpiaAltaUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LimpiaAltaUsuarioActionPerformed
-        LimpiaCampos();
-    }//GEN-LAST:event_LimpiaAltaUsuarioActionPerformed
+    private void BtnEquiposMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnEquiposMouseClicked
+        JlMonitorNombre.setText("Equipos");
+        AdministradorEquipos pantallaclientes = new AdministradorEquipos();
+        pantallaclientes.recibeusuario(idusuarioactivo, usuarioactivo);
+        pantallaclientes.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_BtnEquiposMouseClicked
 
-    private void EliminarAltaUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarAltaUsuarioActionPerformed
-        String Id = IdUsuarioAlta.getText();
-        String Usuario = UsuarioAlta.getText();
-        String Perfil = (String) PerfilAlta.getSelectedItem();
-        String Asignacion = AsignacionAlta.getText();
-
-        Object[] opciones = {"ACEPTAR", "CANCELAR"};
-        int eleccion = JOptionPane.showOptionDialog(rootPane, "Se Eliminará " + Usuario + " Asignado a: "
-                + Asignacion, "Mensaje de Confirmacion",
-                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, "ACEPTAR");
-        if (eleccion == JOptionPane.YES_OPTION) {
-            int confirmar = JOptionPane.YES_OPTION;
-
-            if ("ADMIN".equals(Perfil.toUpperCase().trim())) {
-                confirmar = JOptionPane.showOptionDialog(rootPane, "El Usuario es Administrador, Desea Eliminarlo", "Mensaje de Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, "ACEPTAR");
-            }
-
-            if (confirmar == JOptionPane.YES_OPTION) {
-                Usuario eliminacion = new Usuario();
-                eliminacion.EliminaUsuario(Id);
-                CargaTabla();
-                LimpiaCampos();
-                JOptionPane.showMessageDialog(this, "El Usuario se Eliminó Correctamente");
-            }
-        }
-
-    }//GEN-LAST:event_EliminarAltaUsuarioActionPerformed
-
-    private void UsuarioAltaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_UsuarioAltaFocusGained
-        UsuarioAlta.setText("");
-    }//GEN-LAST:event_UsuarioAltaFocusGained
-
-    private void ContrasenaAltaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ContrasenaAltaFocusGained
-        ContrasenaAlta.setText("");
-    }//GEN-LAST:event_ContrasenaAltaFocusGained
-
-    private void AsignacionAltaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_AsignacionAltaFocusGained
-        AsignacionAlta.setText("");
-    }//GEN-LAST:event_AsignacionAltaFocusGained
-
-    private void PerfilAltaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_PerfilAltaFocusGained
-        Combobox();
-    }//GEN-LAST:event_PerfilAltaFocusGained
-
-    private void PerfilAltaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PerfilAltaMouseClicked
-        Combobox();
-    }//GEN-LAST:event_PerfilAltaMouseClicked
-
-    private void BusquedaUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BusquedaUsuarioKeyPressed
-        Usuario Busqueda = new Usuario();
-        Busqueda.BusquedaUsuario(BusquedaUsuario.getText(), TablaUsuarios, NombreColumnas);
-    }//GEN-LAST:event_BusquedaUsuarioKeyPressed
-
-    private void BusquedaUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BusquedaUsuarioMouseClicked
-        BusquedaUsuario.setText("");
-        Usuario Busqueda = new Usuario();
-        Busqueda.BusquedaUsuario(BusquedaUsuario.getText(), TablaUsuarios, NombreColumnas);
-    }//GEN-LAST:event_BusquedaUsuarioMouseClicked
-
-    private void BusquedaUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BusquedaUsuarioKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BusquedaUsuarioKeyTyped
-
-    private void BusquedaUsuarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BusquedaUsuarioKeyReleased
-        Usuario Busqueda = new Usuario();
-        Busqueda.BusquedaUsuario(BusquedaUsuario.getText(), TablaUsuarios, NombreColumnas);
-    }//GEN-LAST:event_BusquedaUsuarioKeyReleased
-
-    private void BusquedaUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_BusquedaUsuarioFocusLost
-        BusquedaUsuario.setText("Realizar Busqueda");
-    }//GEN-LAST:event_BusquedaUsuarioFocusLost
-
-    private void FotoUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FotoUsuarioMouseClicked
-        javax.swing.JFileChooser ventana = new javax.swing.JFileChooser();
-        ventana.setDialogTitle("Buscar Foto del Usuario");
-        int opcion = ventana.showOpenDialog(this);
-        if (opcion == JFileChooser.APPROVE_OPTION) {
-            String fil = ventana.getSelectedFile().getPath();
-            RSScaleLabel.setScaleLabel(FotoUsuario, ventana.getSelectedFile().toString());
-            rutaimagen = ventana.getSelectedFile().toString();
-        }
-    }//GEN-LAST:event_FotoUsuarioMouseClicked
+    private void BtnConcursosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnConcursosMouseClicked
+        JlMonitorNombre.setText("Concursos");
+        AdministradorConcursos pantallaconcursos = new AdministradorConcursos();
+        pantallaconcursos.recibeusuario(idusuarioactivo, usuarioactivo);
+        pantallaconcursos.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_BtnConcursosMouseClicked
 
     /**
      * @param args the command line arguments
@@ -834,40 +510,24 @@ public class AdministradorResultados extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox ActivarAlta;
-    private javax.swing.JTextField AsignacionAlta;
-    private javax.swing.JTextField BusquedaUsuario;
-    private javax.swing.JTextField ContrasenaAlta;
-    private javax.swing.JButton EliminarAltaUsuario;
-    private javax.swing.JLabel FotoUsuario;
-    private javax.swing.JButton GuardaAltaUsuario;
+    private javax.swing.JButton BtnConcursos;
+    private javax.swing.JButton BtnEquipos;
+    private javax.swing.JButton BtnResultados;
+    private javax.swing.JButton BtnUsuarios;
+    private javax.swing.JTextField BusquedaResultados;
     private javax.swing.JLabel IdUsuarioAlta;
     private javax.swing.JButton ImprimeReporteUsuarios;
-    private javax.swing.JButton JbtnClientes;
-    private javax.swing.JButton JbtnInventario;
-    private javax.swing.JButton JbtnProveedores;
-    private javax.swing.JButton JbtnUsuarios;
     private javax.swing.JLabel JlMonitorNombre;
-    private javax.swing.JButton LimpiaAltaUsuario;
-    private javax.swing.JComboBox<String> PerfilAlta;
-    private javax.swing.JTable TablaUsuarios;
-    private javax.swing.JTextField UsuarioAlta;
+    private javax.swing.JTable TablaResultados;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JSeparator jSeparator5;
     private javax.swing.JLabel monitorinformacion;
     // End of variables declaration//GEN-END:variables
 
@@ -893,12 +553,12 @@ public class AdministradorResultados extends javax.swing.JFrame {
         try {
             String activo;
             ResultSet consulta;
-            ConexionDB db = new ConexionDB();
+            ConexionDb db = new ConexionDb();
             Statement st = db.Conecxion();
             consulta = db.realizarConsulta("SELECT ID, USUARIO, CONTRASEÑA = '******'"
                     + ",PERFIL, ACTIVO, ASIGNACION FROM USUARIOS", st);
             DefaultTableModel tabla = new DefaultTableModel(NombreColumnas, WIDTH);
-            TablaUsuarios.setModel(tabla);
+            TablaResultados.setModel(tabla);
             while (consulta.next()) {
                 activo = consulta.getString("ACTIVO");
                 if ("1".equals(activo)) {
@@ -915,59 +575,4 @@ public class AdministradorResultados extends javax.swing.JFrame {
         }
     }
 
-    private void LimpiaCampos() {
-        IdUsuarioAlta.setText("");
-        UsuarioAlta.setText("Nuevo Usuario");
-        ContrasenaAlta.setText("Ingrese Contraseña");
-        DefaultComboBoxModel cbox = new DefaultComboBoxModel();
-        cbox.addElement("Selecciona un Perfil");
-        PerfilAlta.setModel(cbox);
-        ActivarAlta.setSelected(false);
-        AsignacionAlta.setText("Usuario Asignado a:");
-        BusquedaUsuario.setText("Realizar Busqueda");
-        FotoUsuario.setIcon(icon);
-        rutaimagen = "";
-        idperfil = null;
-    }
-
-    private void Combobox() {
-        try {
-            ResultSet consulta;
-            ConexionDB db = new ConexionDB();
-            Statement st = db.Conecxion();
-            //Statement insertcombox = db.Conecxion();
-            DefaultComboBoxModel cbox = new DefaultComboBoxModel();
-            cbox.addElement("Selecciona un Perfil");
-            consulta = db.realizarConsulta("SELECT * FROM PERFILES", st);
-            while (consulta.next()) {
-                idperfil = consulta.getString("ID");
-                cbox.addElement(consulta.getObject("PERFIL"));
-            }
-            PerfilAlta.setModel(cbox);
-        } catch (SQLException e) {
-        }
-    }
-
-    private void CargaImagen(String idproducto) {
-        ConexionDB db = new ConexionDB();
-        Statement st = db.Conecxion();
-        ResultSet consulta;
-
-        try {
-            consulta = db.realizarConsulta("SELECT ID,IMAGEN2 FROM USUARIOS WHERE ID = " + idproducto, st);
-            consulta.next();
-            String imgst = consulta.getString("IMAGEN2");
-            if (imgst == null) {
-                FotoUsuario.setIcon(icon);
-            } else {
-                Blob imagenproducto = consulta.getBlob("IMAGEN2");
-                byte[] recuperarimagen = imagenproducto.getBytes(1, (int) imagenproducto.length());
-                BufferedImage imgproducto = ImageIO.read(new ByteArrayInputStream(recuperarimagen));
-                Image imagencompleta = imgproducto.getScaledInstance(FotoUsuario.getWidth(), FotoUsuario.getHeight(), Image.SCALE_SMOOTH);
-                FotoUsuario.setIcon(new ImageIcon(imagencompleta));
-            }
-        } catch (SQLException | IOException ex) {
-            Logger.getLogger(AdministradorResultados.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 }
