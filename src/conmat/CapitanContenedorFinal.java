@@ -164,6 +164,7 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
         jTableConcursosDisponibles = new javax.swing.JTable();
         jLabelConcursoSeleccionado = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        jLabelLogoConMat = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         monitorinformacion = new javax.swing.JLabel();
         BtnMinimizar = new javax.swing.JLabel();
@@ -274,6 +275,7 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
 
         jButtonGuardarParticipante.setBackground(new java.awt.Color(255, 255, 255));
         jButtonGuardarParticipante.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Btn_Guardar.png"))); // NOI18N
+        jButtonGuardarParticipante.setBorderPainted(false);
         jButtonGuardarParticipante.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButtonGuardarParticipante.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -362,7 +364,7 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
         );
 
         jPanel2.add(jPanelElegirEquipo);
-        jPanelElegirEquipo.setBounds(30, 20, 1010, 480);
+        jPanelElegirEquipo.setBounds(30, 20, 10, 480);
 
         jPanel4RealizarConcurso.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -813,6 +815,12 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
         jPanel2.add(jPanel4RealizarConcurso);
         jPanel4RealizarConcurso.setBounds(20, 20, 10, 550);
 
+        jLabelLogoConMat.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelLogoConMat.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelLogoConMat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/logo_grande.png"))); // NOI18N
+        jPanel2.add(jLabelLogoConMat);
+        jLabelLogoConMat.setBounds(410, 100, 359, 418);
+
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 40, 1090, 860));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -882,12 +890,8 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
         JlMonitorNombre.setText("Concursos");
         jPanelElegirEquipo.setSize(0, 0);
         jPanel4RealizarConcurso.setSize(1020, 465);
-
         CargaTablaConcursosDisponibles();
-//        CapitanConcursos pantallaclientes = new CapitanConcursos();
-//        pantallaclientes.recibeusuario(idusuarioactivo, usuarioactivo);
-//        pantallaclientes.setVisible(true);
-//        dispose();
+        jLabelLogoConMat.setVisible(false);
     }//GEN-LAST:event_BtnConcursosMouseClicked
 
     private void BtnParticipantesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnParticipantesMouseClicked
@@ -895,10 +899,7 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
         jPanel4RealizarConcurso.setSize(0, 0);
         jPanelElegirEquipo.setSize(1020, 465);
         CargaTabla();
-//        CapitanParticipantes pantallaproveedores = new CapitanParticipantes();
-//        pantallaproveedores.recibeusuario(idusuarioactivo, usuarioactivo);
-//        pantallaproveedores.setVisible(true);
-//        dispose();
+        jLabelLogoConMat.setVisible(false);
     }//GEN-LAST:event_BtnParticipantesMouseClicked
 
     private void jPanel2MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseMoved
@@ -1326,6 +1327,7 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelConcursoSeleccionado;
+    private javax.swing.JLabel jLabelLogoConMat;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
