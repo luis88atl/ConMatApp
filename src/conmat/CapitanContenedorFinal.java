@@ -10,10 +10,12 @@ import funciones.CalificarRespuesta;
 import funciones.ConexionDb;
 import funciones.EliminarParticipantes;
 import funciones.ProcedimientoAlmacenadoEvaluarRespuestas;
+import funciones.ValidarHoraDelConcurso;
 import static java.awt.image.ImageObserver.WIDTH;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
@@ -41,6 +43,9 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
     public int statusInicioDeConcurso = 0;
     public String concursoSeleccionado = "";
 
+    public String horaConcursoSeleccionado;
+    public String horaActual;
+
     Object[] NombreColumnas = {
         "ID",
         "NOMBRE",
@@ -62,7 +67,6 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
         monitorinformacion.setText(usuarioactivo);
         jPanelElegirEquipo.setSize(0, 0);
         jPanel4RealizarConcurso.setSize(0, 0);
-        
 
     }
 
@@ -238,6 +242,8 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
 
         jPanelElegirEquipo.setBackground(new java.awt.Color(255, 255, 255));
 
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+
         TablaParticipantes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -304,22 +310,17 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(26, 26, 26))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jButtonGuardarParticipante)
-                                .addGap(27, 27, 27)))
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jButtonCancelar)
-                                .addGap(32, 32, 32)
-                                .addComponent(jButtonEliminarParticipantes)
-                                .addGap(0, 10, Short.MAX_VALUE))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(TextoNombreParticipante, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                        .addComponent(jButtonGuardarParticipante)
+                        .addGap(27, 27, 27)
+                        .addComponent(jButtonCancelar)
+                        .addGap(32, 32, 32)
+                        .addComponent(jButtonEliminarParticipantes)
+                        .addGap(0, 10, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TextoNombreParticipante, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(109, 109, 109))))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -361,7 +362,7 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
         );
 
         jPanel2.add(jPanelElegirEquipo);
-        jPanelElegirEquipo.setBounds(30, 20, 10, 480);
+        jPanelElegirEquipo.setBounds(30, 20, 1010, 480);
 
         jPanel4RealizarConcurso.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -810,7 +811,7 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
         );
 
         jPanel2.add(jPanel4RealizarConcurso);
-        jPanel4RealizarConcurso.setBounds(20, 20, 0, 550);
+        jPanel4RealizarConcurso.setBounds(20, 20, 10, 550);
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 40, 1090, 860));
 
@@ -881,7 +882,7 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
         JlMonitorNombre.setText("Concursos");
         jPanelElegirEquipo.setSize(0, 0);
         jPanel4RealizarConcurso.setSize(1020, 465);
-        
+
         CargaTablaConcursosDisponibles();
 //        CapitanConcursos pantallaclientes = new CapitanConcursos();
 //        pantallaclientes.recibeusuario(idusuarioactivo, usuarioactivo);
@@ -928,7 +929,6 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
         int val = 0;
         int capitanId = Integer.parseInt(idusuarioactivo);
         String nombreParticipante = TextoNombreParticipante.getText();
-//        int capitanId = Integer.parseInt(idusuarioactivo);
         String instruccionSql = "insert into Participantes values('" + nombreParticipante + "',"
                 + "(select id from Equipos where Capitan =" + capitanId + "))";
 
@@ -950,7 +950,7 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(CapitanContenedorFinal.class.getName()).log(Level.SEVERE, null, ex);
             }
-            //select COUNT(equipo)from Participantes where Equipo = (select id from Equipos where Capitan = 2)
+            
 
             if (val > 4) {
                 System.out.println("no se puede agregar mas");
@@ -996,13 +996,14 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
 
     private void jButtonGuardarRespuestasConcursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarRespuestasConcursoActionPerformed
         funciones.CalificarRespuesta terminar = new CalificarRespuesta();
-
+        funciones.ValidarHoraDelConcurso validarHora = new ValidarHoraDelConcurso();
         int idUsuario = Integer.parseInt(idusuarioactivo);
         int valorRespuestaCalificada;
         int respuestasCorrectas = 0;
         int respuestasIncorrectas;
         int equipoUsuario = 0;
         int idConcursoRealizado = 0;
+        int statusValidacionHora =0;
 
         String respuestaConcurso1 = "";
         String respuestaConcurso2 = "";
@@ -1017,170 +1018,182 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
         int idConcurso = 0;
         int idRespuestas = 0;
         String textoJlabel = "Seleccione un concurso de la tabla";
-        
-        if(jLabelConcursoSeleccionado.getText().equals(textoJlabel) ){
+
+        if (jLabelConcursoSeleccionado.getText().equals(textoJlabel)) {
             JOptionPane.showMessageDialog(rootPane, "Seleccione un concurso de la tabla");
-        }else{
-            try {
-            ResultSet consulta;
-            ConexionDb db = new ConexionDb();
-            Statement st = db.Conecxion();
-//select * from Respuestas where Concurso = (select curso from ConcursosRealizados where Equipo = (select Id from Equipos where capitan = 3))
-//select * from Respuestas where id = (select id from Concursos where Concurso ='CO-MAT-01' )
-            
-            
-            consulta = db.realizarConsulta("select * from Respuestas where id = (select id from Concursos where Concurso ='"+jLabelConcursoSeleccionado.getText()+"')", st);
-            
-            while (consulta.next()) {
-                idRespuestas = consulta.getInt(1);
-                idConcurso = consulta.getInt(2);
-
-                respuestaConcurso1 = consulta.getString(3);
-                respuestaConcurso2 = consulta.getString(4);
-                respuestaConcurso3 = consulta.getString(5);
-                respuestaConcurso4 = consulta.getString(6);
-                respuestaConcurso5 = consulta.getString(7);
-                respuestaConcurso6 = consulta.getString(8);
-                respuestaConcurso7 = consulta.getString(9);
-                respuestaConcurso8 = consulta.getString(10);
-                respuestaConcurso9 = consulta.getString(11);
-                respuestaConcurso10 = consulta.getString(12);
-            }
-            
-
-            
-
-        } catch (SQLException e) {
-            System.out.println(" exeption<");
-        }
-
-        if (buttonGroupRespuesta1.getSelection() == null || buttonGroupRespuesta2.getSelection() == null || buttonGroupRespuesta3.getSelection() == null
-                || buttonGroupRespuesta4.getSelection() == null || buttonGroupRespuesta5.getSelection() == null || buttonGroupRespuesta6.getSelection() == null
-                || buttonGroupRespuesta7.getSelection() == null || buttonGroupRespuesta8.getSelection() == null || buttonGroupRespuesta9.getSelection() == null
-                || buttonGroupRespuesta10.getSelection() == null) {
-
-            JOptionPane.showMessageDialog(rootPane, "llene todos los campos");
-
         } else {
-            Respuesta1A.setActionCommand("A");
-            Respuesta1B.setActionCommand("B");
-            Respuesta1C.setActionCommand("C");
-            Respuesta1D.setActionCommand("D");
-            String RespuestaPregunta1 = buttonGroupRespuesta1.getSelection().getActionCommand();
-//
-//            System.out.println(RespuestaPregunta1 + "-");
-//            System.out.println(respuestaConcurso1 + "--");
-
-            valorRespuestaCalificada = terminar.calificar(RespuestaPregunta1, respuestaConcurso1);
-            respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
-            System.out.println(respuestasCorrectas);
-
-            Respuesta2A.setActionCommand("A");
-            Respuesta2B.setActionCommand("B");
-            Respuesta2C.setActionCommand("C");
-            Respuesta2D.setActionCommand("D");
-            String RespuestaPregunta2 = buttonGroupRespuesta2.getSelection().getActionCommand();
-            valorRespuestaCalificada = terminar.calificar(RespuestaPregunta2, respuestaConcurso2);
-            respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
-//        
-//            System.out.println(respuestasCorrectas);
-            Respuesta3A.setActionCommand("A");
-            Respuesta3B.setActionCommand("B");
-            Respuesta3C.setActionCommand("C");
-            Respuesta3D.setActionCommand("D");
-            String RespuestaPregunta3 = buttonGroupRespuesta3.getSelection().getActionCommand();
-
-            valorRespuestaCalificada = terminar.calificar(RespuestaPregunta3, respuestaConcurso3);
-            respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
-
-            Respuesta4A.setActionCommand("A");
-            Respuesta4B.setActionCommand("B");
-            Respuesta4C.setActionCommand("C");
-            Respuesta4D.setActionCommand("D");
-            String RespuestaPregunta4 = buttonGroupRespuesta4.getSelection().getActionCommand();
-            valorRespuestaCalificada = terminar.calificar(RespuestaPregunta4, respuestaConcurso4);
-            respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
-
-            Respuesta5A.setActionCommand("A");
-            Respuesta5B.setActionCommand("B");
-            Respuesta5C.setActionCommand("C");
-            Respuesta5D.setActionCommand("D");
-            String RespuestaPregunta5 = buttonGroupRespuesta5.getSelection().getActionCommand();
-            valorRespuestaCalificada = terminar.calificar(RespuestaPregunta5, respuestaConcurso5);
-            respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
-
-            Respuesta6A.setActionCommand("A");
-            Respuesta6B.setActionCommand("B");
-            Respuesta6C.setActionCommand("C");
-            Respuesta6D.setActionCommand("D");
-            String RespuestaPregunta6 = buttonGroupRespuesta6.getSelection().getActionCommand();
-            valorRespuestaCalificada = terminar.calificar(RespuestaPregunta6, respuestaConcurso6);
-            respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
-
-            Respuesta7A.setActionCommand("A");
-            Respuesta7B.setActionCommand("B");
-            Respuesta7C.setActionCommand("C");
-            Respuesta7D.setActionCommand("D");
-            String RespuestaPregunta7 = buttonGroupRespuesta7.getSelection().getActionCommand();
-            valorRespuestaCalificada = terminar.calificar(RespuestaPregunta7, respuestaConcurso7);
-            respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
-
-            Respuesta8A.setActionCommand("A");
-            Respuesta8B.setActionCommand("B");
-            Respuesta8C.setActionCommand("C");
-            Respuesta8D.setActionCommand("D");
-            String RespuestaPregunta8 = buttonGroupRespuesta8.getSelection().getActionCommand();
-            valorRespuestaCalificada = terminar.calificar(RespuestaPregunta8, respuestaConcurso8);
-            respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
-
-            Respuesta9A.setActionCommand("A");
-            Respuesta9B.setActionCommand("B");
-            Respuesta9C.setActionCommand("C");
-            Respuesta9D.setActionCommand("D");
-            String RespuestaPregunta9 = buttonGroupRespuesta9.getSelection().getActionCommand();
-            valorRespuestaCalificada = terminar.calificar(RespuestaPregunta9, respuestaConcurso9);
-            respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
-
-            Respuesta10A.setActionCommand("A");
-            Respuesta10B.setActionCommand("B");
-            Respuesta10C.setActionCommand("C");
-            Respuesta10D.setActionCommand("D");
-            String RespuestaPregunta10 = buttonGroupRespuesta10.getSelection().getActionCommand();
-            valorRespuestaCalificada = terminar.calificar(RespuestaPregunta10, respuestaConcurso10);
-            respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
-
-            System.out.println("respuestas correctas :" + respuestasCorrectas);
-
+            
+           statusValidacionHora= validarHora.statusConcurso(jLabelConcursoSeleccionado.getText());
+            if(statusValidacionHora == 1){
+                System.out.println("el concurso se puede realizar :"+statusValidacionHora);
+                
             try {
                 ResultSet consulta;
                 ConexionDb db = new ConexionDb();
                 Statement st = db.Conecxion();
-//select id,Equipo from ConcursosRealizados where Equipo = (select id from Equipos where capitan = 3)
-//select id from ConcursosRealizados where Equipo = 3 and curso = (select id from Concursos where Concurso = 'CO-MAT-01')
-                consulta = db.realizarConsulta("select id from ConcursosRealizados where Equipo = (select id from Equipos where capitan ="
-                        + idUsuario + ") and curso = (select id from Concursos where Concurso = '"+jLabelConcursoSeleccionado.getText()+"')", st);
-                while (consulta.next()) {
-                    idConcursoRealizado = consulta.getInt(1);
 
+                consulta = db.realizarConsulta("select * from Respuestas where id = (select id from Concursos where Concurso ='" + jLabelConcursoSeleccionado.getText() + "')", st);
+
+                while (consulta.next()) {
+                    idRespuestas = consulta.getInt(1);
+                    idConcurso = consulta.getInt(2);
+
+                    respuestaConcurso1 = consulta.getString(3);
+                    respuestaConcurso2 = consulta.getString(4);
+                    respuestaConcurso3 = consulta.getString(5);
+                    respuestaConcurso4 = consulta.getString(6);
+                    respuestaConcurso5 = consulta.getString(7);
+                    respuestaConcurso6 = consulta.getString(8);
+                    respuestaConcurso7 = consulta.getString(9);
+                    respuestaConcurso8 = consulta.getString(10);
+                    respuestaConcurso9 = consulta.getString(11);
+                    respuestaConcurso10 = consulta.getString(12);
                 }
 
             } catch (SQLException e) {
-                System.out.println(" exeption idequipousuario <");
+                System.out.println(" exeption<");
             }
 
+            if (buttonGroupRespuesta1.getSelection() == null || buttonGroupRespuesta2.getSelection() == null || buttonGroupRespuesta3.getSelection() == null
+                    || buttonGroupRespuesta4.getSelection() == null || buttonGroupRespuesta5.getSelection() == null || buttonGroupRespuesta6.getSelection() == null
+                    || buttonGroupRespuesta7.getSelection() == null || buttonGroupRespuesta8.getSelection() == null || buttonGroupRespuesta9.getSelection() == null
+                    || buttonGroupRespuesta10.getSelection() == null) {
+
+                JOptionPane.showMessageDialog(rootPane, "Llene todas las casillas de respuesta");
+
+            } else {
+                Respuesta1A.setActionCommand("A");
+                Respuesta1B.setActionCommand("B");
+                Respuesta1C.setActionCommand("C");
+                Respuesta1D.setActionCommand("D");
+                String RespuestaPregunta1 = buttonGroupRespuesta1.getSelection().getActionCommand();
+
+
+                valorRespuestaCalificada = terminar.calificar(RespuestaPregunta1, respuestaConcurso1);
+                respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
+                System.out.println(respuestasCorrectas);
+
+                Respuesta2A.setActionCommand("A");
+                Respuesta2B.setActionCommand("B");
+                Respuesta2C.setActionCommand("C");
+                Respuesta2D.setActionCommand("D");
+                String RespuestaPregunta2 = buttonGroupRespuesta2.getSelection().getActionCommand();
+                valorRespuestaCalificada = terminar.calificar(RespuestaPregunta2, respuestaConcurso2);
+                respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
+        
+
+                Respuesta3A.setActionCommand("A");
+                Respuesta3B.setActionCommand("B");
+                Respuesta3C.setActionCommand("C");
+                Respuesta3D.setActionCommand("D");
+                String RespuestaPregunta3 = buttonGroupRespuesta3.getSelection().getActionCommand();
+
+                valorRespuestaCalificada = terminar.calificar(RespuestaPregunta3, respuestaConcurso3);
+                respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
+
+                Respuesta4A.setActionCommand("A");
+                Respuesta4B.setActionCommand("B");
+                Respuesta4C.setActionCommand("C");
+                Respuesta4D.setActionCommand("D");
+                String RespuestaPregunta4 = buttonGroupRespuesta4.getSelection().getActionCommand();
+                valorRespuestaCalificada = terminar.calificar(RespuestaPregunta4, respuestaConcurso4);
+                respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
+
+                Respuesta5A.setActionCommand("A");
+                Respuesta5B.setActionCommand("B");
+                Respuesta5C.setActionCommand("C");
+                Respuesta5D.setActionCommand("D");
+                String RespuestaPregunta5 = buttonGroupRespuesta5.getSelection().getActionCommand();
+                valorRespuestaCalificada = terminar.calificar(RespuestaPregunta5, respuestaConcurso5);
+                respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
+
+                Respuesta6A.setActionCommand("A");
+                Respuesta6B.setActionCommand("B");
+                Respuesta6C.setActionCommand("C");
+                Respuesta6D.setActionCommand("D");
+                String RespuestaPregunta6 = buttonGroupRespuesta6.getSelection().getActionCommand();
+                valorRespuestaCalificada = terminar.calificar(RespuestaPregunta6, respuestaConcurso6);
+                respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
+
+                Respuesta7A.setActionCommand("A");
+                Respuesta7B.setActionCommand("B");
+                Respuesta7C.setActionCommand("C");
+                Respuesta7D.setActionCommand("D");
+                String RespuestaPregunta7 = buttonGroupRespuesta7.getSelection().getActionCommand();
+                valorRespuestaCalificada = terminar.calificar(RespuestaPregunta7, respuestaConcurso7);
+                respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
+
+                Respuesta8A.setActionCommand("A");
+                Respuesta8B.setActionCommand("B");
+                Respuesta8C.setActionCommand("C");
+                Respuesta8D.setActionCommand("D");
+                String RespuestaPregunta8 = buttonGroupRespuesta8.getSelection().getActionCommand();
+                valorRespuestaCalificada = terminar.calificar(RespuestaPregunta8, respuestaConcurso8);
+                respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
+
+                Respuesta9A.setActionCommand("A");
+                Respuesta9B.setActionCommand("B");
+                Respuesta9C.setActionCommand("C");
+                Respuesta9D.setActionCommand("D");
+                String RespuestaPregunta9 = buttonGroupRespuesta9.getSelection().getActionCommand();
+                valorRespuestaCalificada = terminar.calificar(RespuestaPregunta9, respuestaConcurso9);
+                respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
+
+                Respuesta10A.setActionCommand("A");
+                Respuesta10B.setActionCommand("B");
+                Respuesta10C.setActionCommand("C");
+                Respuesta10D.setActionCommand("D");
+                String RespuestaPregunta10 = buttonGroupRespuesta10.getSelection().getActionCommand();
+                valorRespuestaCalificada = terminar.calificar(RespuestaPregunta10, respuestaConcurso10);
+                respuestasCorrectas = respuestasCorrectas + valorRespuestaCalificada;
+
+                System.out.println("respuestas correctas :" + respuestasCorrectas);
+
+                try {
+                    ResultSet consulta;
+                    ConexionDb db = new ConexionDb();
+                    Statement st = db.Conecxion();
+                    consulta = db.realizarConsulta("select id from ConcursosRealizados where Equipo = (select id from Equipos where capitan ="
+                            + idUsuario + ") and curso = (select id from Concursos where Concurso = '" + jLabelConcursoSeleccionado.getText() + "')", st);
+                    while (consulta.next()) {
+                        idConcursoRealizado = consulta.getInt(1);
+
+                    }
+
+                } catch (SQLException e) {
+                    System.out.println(" exeption idequipousuario <");
+                }
+
+                funciones.ProcedimientoAlmacenadoEvaluarRespuestas evaluar = new ProcedimientoAlmacenadoEvaluarRespuestas();
+                try {
+                    evaluar.InsertarResultados(idConcursoRealizado, respuestasCorrectas);
+                } catch (SQLException ex) {
+                    Logger.getLogger(CapitanContenedorFinal.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("error en clase store");
+                }
+                
+                 JOptionPane.showMessageDialog(rootPane, "Respuestas enviadas exitosamente GRACIAS POR PARTICIPAR ");
+                 buttonGroupRespuesta1.clearSelection();
+                 buttonGroupRespuesta2.clearSelection();
+                 buttonGroupRespuesta3.clearSelection();
+                 buttonGroupRespuesta4.clearSelection();
+                 buttonGroupRespuesta5.clearSelection();
+                 buttonGroupRespuesta6.clearSelection();
+                 buttonGroupRespuesta7.clearSelection();
+                 buttonGroupRespuesta8.clearSelection();
+                 buttonGroupRespuesta9.clearSelection();
+                 buttonGroupRespuesta10.clearSelection();
+
+            }
+                
+            }else{
+                System.out.println("no se puede realizar el concurso "+statusValidacionHora);
+                JOptionPane.showMessageDialog(rootPane, "Este concurso no se puede realizar, revise la hora de : "+jLabelConcursoSeleccionado.getText());
+            }
             
-            funciones.ProcedimientoAlmacenadoEvaluarRespuestas evaluar = new ProcedimientoAlmacenadoEvaluarRespuestas();
-            try {
-                evaluar.InsertarResultados(idConcursoRealizado, respuestasCorrectas);
-            } catch (SQLException ex) {
-                Logger.getLogger(CapitanContenedorFinal.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println("error en clase store");
-            }
+            
+        }
 
-        }
-        }
-        
-        
 
     }//GEN-LAST:event_jButtonGuardarRespuestasConcursoActionPerformed
 
@@ -1193,7 +1206,11 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
         int i = jTableConcursosDisponibles.getSelectedRow();
         TableModel modelo = jTableConcursosDisponibles.getModel();
         jLabelConcursoSeleccionado.setText(modelo.getValueAt(i, 0).toString());
-        System.out.println("jlabel :"+jLabelConcursoSeleccionado.getText());
+        horaConcursoSeleccionado = modelo.getValueAt(i, 1).toString();
+        System.out.println("jlabel :" + jLabelConcursoSeleccionado.getText());
+        System.out.println("hora actual:" + horaActual);
+        System.out.println("hora concurso select:" + horaConcursoSeleccionado);
+
 
     }//GEN-LAST:event_jTableConcursosDisponiblesMouseClicked
 
@@ -1339,6 +1356,7 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
         SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
         String informacion = "Bienvenido " + usuarioactivo + " " + date.format(now) + " " + hour.format(now);
         monitorinformacion.setText(informacion);
+        horaActual = hour.format(now);
     }
 
     private void CargaTabla() {
@@ -1373,9 +1391,6 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
                 i++;
             }
 
-            for (int e = 0; e < idConcursoDisponible.length; e++) {
-//                System.out.println("posision :" + e + "concurso disponible" + idConcursoDisponible[e]);
-            }
 
         } catch (SQLException ex) {
             Logger.getLogger(CapitanContenedorFinal.class.getName()).log(Level.SEVERE, null, ex);
@@ -1397,6 +1412,7 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
                         System.out.println("id cdisponible" + idConcursoDisponible[e]);
                         v.add(consulta.getString(2));
                         v.add(consulta.getString(3));
+
                         v.add(consulta.getString(4));
                         modelo.addRow(v);
                         System.out.println(v);
@@ -1415,27 +1431,4 @@ public class CapitanContenedorFinal extends javax.swing.JFrame {
 
     }
 
-//    private void ComboboxCapitan() {
-//
-//        int idCapitan = Integer.parseInt(idusuarioactivo);
-////        System.out.println(idCapitan);
-//        try {
-////            ResultSet consulta;
-//            ConexionDb db = new ConexionDb();
-//            Statement st = db.Conecxion();
-//            DefaultComboBoxModel Cbox = new DefaultComboBoxModel();
-//            Cbox.addElement("Seleccione Concurso");
-//            System.out.println("id capitan combo " + idCapitan);
-//            consulta = db.realizarConsulta("select concurso from Concursos where id = (select curso from ConcursosRealizados where Equipo = (select id from equipos where capitan = "
-//                    + idCapitan + "))and HoraInicio < (SELECT Convert(varchar(7),GetDate(), 108)) and HoraFinal >(SELECT Convert(varchar(7),GetDate(), 108))", st);
-//
-//            while (consulta.next()) {
-//
-//                Cbox.addElement(consulta.getString(1));
-//            }
-//            comboBoxConcursosInscritoCapitan.setModel(Cbox);
-//        } catch (SQLException e) {
-//            System.out.println("error combobox");
-//        }
-//    }
 }
