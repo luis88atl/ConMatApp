@@ -5,7 +5,7 @@
  */
 package funciones;
 
-import conmat.CapitanContenedorFinal;
+import conmat.CapitanContenedor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -28,7 +28,7 @@ public class EliminarParticipantes {
                         + idParticipante, st);
                 
             } catch (SQLException ex) {
-                Logger.getLogger(CapitanContenedorFinal.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CapitanContenedor.class.getName()).log(Level.SEVERE, null, ex);
             }
     }
 }

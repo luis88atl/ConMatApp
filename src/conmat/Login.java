@@ -280,7 +280,7 @@ public class Login extends javax.swing.JFrame {
                     ventanaprinciapal.recibeusuario(idusuario, nombreusuario);
                     ventanaprinciapal.setVisible(true);
                 } else {
-                    CapitanContenedorFinal ventanaprinciapal = new CapitanContenedorFinal();
+                    CapitanContenedor ventanaprinciapal = new CapitanContenedor();
                     ventanaprinciapal.recibeusuario(idusuario, nombreusuario);
                     ventanaprinciapal.setVisible(true);
                 }
